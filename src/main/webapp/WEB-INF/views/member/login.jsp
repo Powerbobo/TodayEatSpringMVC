@@ -14,8 +14,8 @@
 					<h2>로그인</h2>
 					<form action="/member/login.do" method="post" id="login-form">
 						<!-- 아이디/비밀번호 입력창 -->
-						<input type="text" name="user-id" id="user-id" placeholder="아이디를 입력해주세요"> 
-						<input type="password" name="user-pw" id="user-pw" placeholder="비밀번호를 입력해주세요">
+						<input class="loginBtn" type="text" name="memberId" id="user-id" placeholder="아이디를 입력해주세요"> 
+						<input type="password" name="memberPw" id="user-Pw" placeholder="비밀번호를 입력해주세요">
 						<!-- 자동 로그인 -->
 						<label for="remember-check"> <input type="checkbox" id="remember-check">
 						<span>아이디 저장하기</span>

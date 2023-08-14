@@ -7,6 +7,7 @@
 		<title>서비스 결과 실패</title>
 	</head>
 	<body>
+		<h1>${msg }</h1>
 		<script>
 			const result = "${msg}"
 			const url = "${url}";

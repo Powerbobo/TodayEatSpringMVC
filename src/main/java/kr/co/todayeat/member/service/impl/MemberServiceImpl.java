@@ -17,21 +17,9 @@ public class MemberServiceImpl implements MemberService {
 	private SqlSession sqlSession;
 	
 	@Override
-	public int insertMember(Member member) {
-		int result = mStore.insertMember(sqlSession, member);
-		return result;
-	}
-
-	@Override
-	public int updateMember(Member member) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public Member selectLongin(Member member) {
-		// TODO Auto-generated method stub
-		return null;
+		Member mOne = mStore.selectLongin(sqlSession, member);
+		return mOne;
 	}
 
 	@Override
@@ -60,8 +48,20 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public Member selectOneById(String memberId) {
+		Member mOne = mStore.selectOneById(sqlSession, memberId);
+		return mOne;
+	}
+
+	@Override
+	public int insertMember(Member member) {
+		int result = mStore.insertMember(sqlSession, member);
+		return result;
+	}
+
+	@Override
+	public int updateMember(Member member) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	@Override

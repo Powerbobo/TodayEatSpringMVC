@@ -9,7 +9,7 @@
 	<!-- driverClassName, url, username, password Bean 등록 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<!-- 값이나 의존성 주입 -->
-		<property name="driverClassName" value="oracla.jdbc.driver.OracleDriver"></property>
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
 		<property name="url" 			 value="jdbc:oracle:thin:@127.0.0.1:1521:XE"></property>
 		<property name="username"		 value="TODAYEAT"></property>
 		<property name="password" 		 value="TODAYEAT"></property>

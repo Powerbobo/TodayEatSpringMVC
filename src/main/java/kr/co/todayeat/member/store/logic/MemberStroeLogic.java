@@ -10,21 +10,9 @@ import kr.co.todayeat.member.store.MemberStore;
 public class MemberStroeLogic implements MemberStore {
 
 	@Override
-	public int insertMember(SqlSession session, Member member) {
-		int result = session.insert("MemberMapper.insertMember", member);
-		return result;
-	}
-
-	@Override
-	public int updateMember(SqlSession session, Member member) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public Member selectLongin(SqlSession session, Member member) {
-		// TODO Auto-generated method stub
-		return null;
+		Member mOne = session.selectOne("MemberMapper.selectLongin", member);
+		return mOne;
 	}
 
 	@Override
@@ -53,8 +41,20 @@ public class MemberStroeLogic implements MemberStore {
 
 	@Override
 	public Member selectOneById(SqlSession session, String memberId) {
+		Member mOne = session.selectOne("MemberMapper.selectOneById", memberId);
+		return mOne;
+	}
+
+	@Override
+	public int insertMember(SqlSession session, Member member) {
+		int result = session.insert("MemberMapper.insertMember", member);
+		return result;
+	}
+
+	@Override
+	public int updateMember(SqlSession session, Member member) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	@Override

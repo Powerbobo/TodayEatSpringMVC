@@ -66,19 +66,19 @@ label > span {
     font-family: 'LINESeedKR-Bd';
 }
 
-#sns-login > input[value="Google ë¡œê·¸ì¸"] {
+#sns-login > input[value="Google ·Î±×ÀÎ"] {
     color: #fff;
     font-size: 20px;
     background-color: #e52000;
     margin-top: 20px;
 }
-#sns-login > input[value="Naver ë¡œê·¸ì¸"] {
+#sns-login > input[value="Naver ·Î±×ÀÎ"] {
     color: #fff;
     font-size: 20px;
     background-color: #00C73C;
     margin-top: 5px;
 }
-#sns-login > input[value="Kakao ë¡œê·¸ì¸"] {
+#sns-login > input[value="Kakao ·Î±×ÀÎ"] {
     color: #222;
     font-size: 20px;
     background-color: #f9e000;

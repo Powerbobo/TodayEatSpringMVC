@@ -7,9 +7,7 @@
 		<title>오늘 뭐 먹지?</title>
 		<link rel="stylesheet" href="/resources/css/index.css">
 		<link rel="stylesheet" href="/resources/css/reset.css">
-		<link rel="stylesheet" href="/resources/css/find_id_email.css">
-		<link rel="stylesheet" href="/resources/css/find_id_phone.css">
-		<link rel="stylesheet" href="/resources/css/find_pw_phone.css">
-		<link rel="stylesheet" href="/resources/css/fine_pw_email.css">
+		<link rel="stylesheet" href="/resources/css/login.css">
+
 		<title>오늘 뭐 먹지?</title>
 	</head>
