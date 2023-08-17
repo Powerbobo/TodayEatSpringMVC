@@ -16,15 +16,18 @@
 		<result property="memberGender"   column="MEMBER_GENDER" />
 		<result property="memberBirthday" column="MEMBER_BIRTHDAY" />
 	</resultMap>
-
+	
+	<!-- 회원가입 -->
 	<insert id="insertMember">
 		INSERT INTO MEMBER_TBL VALUES(#{ memberId }, #{ memberPw }, #{ memberPwRe }, #{ memberName }, #{ memberPhone }, #{ memberEmail }, #{ memberAddress }, #{ memberGender }, #{ memberBirthday })
 	</insert>
 	
+	<!-- 로그인 -->
 	<select id="selectLongin" resultMap="memberResultMap">
 		SELECT * FROM MEMBER_TBL WHERE MEMBER_ID = #{ memberId } AND MEMBER_PW = #{ memberPw }
 	</select>
 	
+	<!-- 마이페이지 -->
 	<select id="selectOneById" resultMap="memberResultMap">
 		SELECT * FROM MEMBER_TBL WHERE MEMBER_ID = #{ memberId }
 	</select>

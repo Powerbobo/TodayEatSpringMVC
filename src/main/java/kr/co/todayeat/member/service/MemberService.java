@@ -8,65 +8,65 @@ import kr.co.todayeat.member.domain.Member;
 public interface MemberService {
 	
 	/**
-	 * È¸¿ø µî·Ï Service
+	 * íšŒì›ê°€ì… Service
 	 * @param member
-	 * @return
+	 * @return int
 	 */
 	public int insertMember(Member member);
 	
 	/**
-	 * È¸¿ø ·Î±×ÀÎ Service
+	 * ë¡œê·¸ì¸ Service
 	 * @param member
-	 * @return
+	 * @return Member
 	 */
 	public Member selectLongin(Member member);
 
 	/**
-	 * È¸¿ø ¾ÆÀÌµğ Ã£±âService(ÀÌ¸ŞÀÏ)
+	 * ì•„ì´ë”” ì°¾ê¸°(ì´ë©”ì¼) Service
 	 * @param member
-	 * @return
+	 * @return Member
 	 */
 	public Member selectOneByEmail(Member member);
 
 	/**
-	 * È¸¿ø ¾ÆÀÌµğ Ã£±â Service(ÀüÈ­¹øÈ£)
+	 * ì•„ì´ë”” ì°¾ê¸°(ì „í™”ë²ˆí˜¸) Service
 	 * @param member
-	 * @return
+	 * @return Member
 	 */
 	public Member selectOneByPhone(Member member);
 
 	/**
-	 * È¸¿ø ºñ¹Ğ¹øÈ£ Ã£±â Service(ÀüÈ­¹øÈ£)
+	 *  ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°(ì „í™”ë²ˆí˜¸) Service
 	 * @param member
-	 * @return
+	 * @return Member
 	 */
 	public Member selectPwOneByPhone(Member member);
 
 	/**
-	 * È¸¿ø ºñ¹Ğ¹øÈ£ Ã£±â Service(ÀÌ¸ŞÀÏ)
+	 * ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°(ì´ë©”ì¼) Service
 	 * @param member
-	 * @return
+	 * @return Member
 	 */
 	public Member selectPwOneByEmail(Member member);
 
 	/**
-	 * È¸¿ø ¸¶ÀÌÆäÀÌÁö Á¶È¸ Service
+	 * ë§ˆì´í˜ì´ì§€ ì¡°íšŒ Service
 	 * @param memberId
-	 * @return
+	 * @return Member
 	 */
 	public Member selectOneById(String memberId);
 
 	/**
-	 * È¸¿ø Á¤º¸ ¼öÁ¤ Service
+	 * íšŒì›ì •ë³´ ìˆ˜ì • Service
 	 * @param member
-	 * @return
+	 * @return int
 	 */
 	public int updateMember(Member member);
 	
 	/**
-	 * È¸¿ø Å»ÅğÇÏ±â Service
+	 *  íšŒì› íƒˆí‡´ Service
 	 * @param memberId
-	 * @return
+	 * @return int
 	 */
 	public int deleteMember(String memberId);
 	

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,20 +22,19 @@ import kr.co.todayeat.member.domain.Member;
 import kr.co.todayeat.member.service.MemberService;
 
 @Controller
-@SessionAttributes({ "memberId", "memberName" })	// ¼¼¼Ç ÀúÀå ¹æ¹ı 1)
+//@SessionAttributes({ "memberId", "memberName" })	// ë¡œê·¸ì¸ ì„¸ì…˜ ì €ì¥ 1)
 public class MemberController {
 	
 	@Autowired
 	private MemberService service;
 	
-	// È¸¿ø°¡ÀÔ ÆäÀÌÁö ÀÌµ¿
-	// a ÅÂ±× -> doGet
+	// íšŒì›ê°€ì… í˜ì´ì§€ ì´ë™
 	@RequestMapping(value="/member/join.do", method=RequestMethod.GET)
 	public String showRegisterForm(Model model) {
 		return "member/join";
 	}
 	
-	// È¸¿ø°¡ÀÔ
+	// íšŒì›ê°€ì… ê¸°ëŠ¥ êµ¬í˜„
 	@RequestMapping(value="/member/join.do", method=RequestMethod.POST)
 	public String registerMember(
 			@RequestParam("joinId") String memberId
@@ -45,26 +45,26 @@ public class MemberController {
 			, @RequestParam("joinEmail") String memberEmail
 			, @RequestParam("joinAddr") String memberAddress
 			, @RequestParam("gender") String memberGender
-			// date Å¸ÀÔÀ¸·Î º¯È¯ÇÏ±â À§ÇØ¼­
+			// date í˜•ë³€í™˜
 			, @RequestParam(value="joinBir", required = false) String mBirthday
 			, Model model) {
 		
 		try {
-			// date Å¸ÀÔÀ¸·Î º¯È¯
+			// date í˜•ë³€í™˜
 			DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			LocalDate date = LocalDate.parse(mBirthday, format);
 			Date memberBirthday = Date.valueOf(date);
 			Member member = new Member(memberId, memberPw, memberPwRe, memberName, memberPhone, memberEmail, memberAddress, memberGender, memberBirthday);
 			int result = service.insertMember(member);
-			// À¯È¿¼º °Ë»ç
+			// ìœ íš¨ì„± ê²€ì‚¬
 			if(result > 0) {
-				// ¼º°ø -> ¼º°ø alert Ã¢ ¶ç¿ì°í ·Î±×ÀÎ ÆäÀÌÁö·Î ÀÌµ¿
-				model.addAttribute("msg", "È¸¿ø°¡ÀÔ ¼º°ø!");
-				model.addAttribute("url", "/index.jsp");	// ·Î±×ÀÎ ÆäÀÌÁö ¸¸µé±â Àü ÀÓ½Ã
+				// ì„±ê³µ - > ë©”ì¸í˜ì´ì§€ë¡œ ì´ë™
+				model.addAttribute("msg", "íšŒì›ê°€ì… ì„±ê³µ!");
+				model.addAttribute("url", "/index.jsp");
 				return "common/serviceSuccess";
 			} else {
-				// ½ÇÆĞ -> ½ÇÆĞ alert Ã¢ ¶ç¿ì°í ´Ù½Ã È¸¿ø°¡ÀÔ ÆäÀÌÁö
-				model.addAttribute("msg", "È¸¿ø°¡ÀÔ ½ÇÆĞ!");
+				// ì‹¤íŒ¨ -> alert ì‹¤íŒ¨ ë©”ì„¸ì§€ ë„ìš°ê³  ë‹¤ì‹œ íšŒì›ê°€ì… í˜ì´ì§€ë¡œ ì´ë™
+				model.addAttribute("msg", "íšŒì›ê°€ì… ì‹¤íŒ¨!");
 				model.addAttribute("url", "/member/join.do");
 				return "common/serviceFailed";
 			}
@@ -76,75 +76,70 @@ public class MemberController {
 		
 	}
 	
-	// ·Î±×ÀÎ ÆäÀÌÁö ÀÌµ¿
-	// a ÅÂ±× -> doGet
+	// ë¡œê·¸ì¸ í˜ì´ì§€ ì´ë™
 	@RequestMapping(value="/member/login.do", method=RequestMethod.GET)
 	public String showLoginForm(Model model) {
 		return "member/login";
 	}
 	
-	// ·Î±×ÀÎ
+	// ë¡œê·¸ì¸ ê¸°ëŠ¥ êµ¬í˜„
 	@RequestMapping(value="/member/login.do", method=RequestMethod.POST)
 	public String loginMember(
-			@RequestParam("memberId") String memberId
-			, @RequestParam("memberPw") String memberPw
+			@ModelAttribute Member member
+			, HttpSession session
 			, HttpServletRequest request
 			, Model model) {
 		try {
-			Member member = new Member(memberId, memberPw);
-			member = service.selectLongin(member);
-			if(member != null) {
-				// ·Î±×ÀÎ ¼º°ø -> ¼º°ø alert Ã¢°ú ÇÔ²² ¸ŞÀÎÆäÀÌÁö·Î ÀÌµ¿
-				// ¼¼¼Ç ÀúÀå ¹æ¹ı 2)
-//				HttpSession session = request.getSession();
-//				session.setAttribute("memberId", member.getMemberId());
-//				session.setAttribute("memberPw", member.getMemberPw());
+			Member mOne = service.selectLongin(member);
+			// ìœ íš¨ì„± ê²€ì‚¬
+			if(mOne != null) {
+				// ì„±ê³µ -> alert ì„±ê³µ ë©”ì„¸ì§€ ì¶œë ¥ í›„ ë©”ì¸ í˜ì´ì§€
+				// ë¡œê·¸ì¸ ì„¸ì…˜ ì €ì¥ë°©ë²• 2)
+				session.setAttribute("memberId", mOne.getMemberId());
+				session.setAttribute("memberName", mOne.getMemberName());
 				
-				model.addAttribute("memberId", member.getMemberId());
-				model.addAttribute("memberName", member.getMemberName());
-				model.addAttribute("msg", "·Î±×ÀÎ ¼º°ø!");
+				model.addAttribute("msg", "ë¡œê·¸ì¸ ì„±ê³µ!");
 				model.addAttribute("url", "/index.jsp");
 				return "common/serviceSuccess";
 			} else {
-				// ·Î±×ÀÎ ½ÇÆĞ -> ½ÇÆĞ alert Ã¢°ú ÇÔ²² ´Ù½Ã ·Î±×ÀÎ ÆäÀÌÁö
-				model.addAttribute("msg", "·Î±×ÀÎ ½ÇÆĞ!");
+				// ì‹¤íŒ¨ -> alert ì‹¤íŒ¨ ë©”ì„¸ì§€ ì¶œë ¥ í›„ ë¡œê·¸ì¸ í˜ì´ì§€
+				model.addAttribute("msg", "ë¡œê·¸ì¸ ì‹¤íŒ¨!");
 				model.addAttribute("url", "/member/login.do");
 				return "common/serviceFailed";
 			}
 		} catch (Exception e) {
-			// ¿¹¿ÜÃ³¸®
+			// ì˜ˆì™¸ì²˜ë¦¬
 			e.getStackTrace();
 			model.addAttribute("msg", e.getMessage());
 			return "common/serviceFailed";
 		}
 	}
 	
-	// ·Î±×¾Æ¿ô
+	// ë¡œê·¸ì•„ì›ƒ êµ¬í˜„
 	@RequestMapping(value="/member/logout.do", method=RequestMethod.GET)
 	public String logoutMember(
 			HttpSession sessionPrev
 			, SessionStatus session
 			, Model model) {
-		if(session != null) {	// ·Î±×ÀÎÀÌ µÇ¾îÀÖ´Ù¸é
-			// ¼¼¼Ç ÆÄ±«
-			model.addAttribute("msg", "·Î±×¾Æ¿ô ¼º°ø!");
+		// ìœ íš¨ì„± ê²€ì‚¬
+		if(session != null) {
+			// ì„±ê³µ -> alert ì„±ê³µ ë©”ì„¸ì§€ ì¶œë ¥ í›„ ë©”ì¸ í˜ì´ì§€
+			model.addAttribute("msg", "ë¡œê·¸ì•„ì›ƒ ì„±ê³µ!");
 			model.addAttribute("url", "/index.jsp");
 			session.setComplete();
 			if(session.isComplete()) {
-				// ¼¼¼Ç¸¸·á À¯È¿¼º Ã¼Å©
+				// ì„¸ì…˜ íŒŒê´´
 			}
-			// ·Î±×¾Æ¿ô ¼º°ø -> ¸ŞÀÎÆäÀÌÁö·Î ÀÌµ¿
 			return "common/serviceSuccess";
 		} else {
-			// ·Î±×¾Æ¿ô ½ÇÆĞ -> alert Ã¢À¸·Î ½ÇÆĞ ¸Ş¼¼Áö ¶ç¿ì±â
-			model.addAttribute("msg", "·Î±×¾Æ¿ô ½ÇÆĞ!");
+			// ì‹¤íŒ¨ -> alert ì‹¤íŒ¨ ë©”ì„¸ì§€ ì¶œë ¥ í›„ ë©”ì¸ í˜ì´ì§€
+			model.addAttribute("msg", "ë¡œê·¸ì•„ì›ƒ ì‹¤íŒ¨!");
 			model.addAttribute("url", "/index.jsp");
 			return "common/serviceFailed";
 		}
 	}
 	
-	// ¸¶ÀÌÆäÀÌÁö·Î ÀÌµ¿
-	// a ÅÂ±× -> doGet
+	// ë§ˆì´í˜ì´ì§€ ì´ë™
 	@RequestMapping(value="/member/myPage.do", method=RequestMethod.GET)
 	public String selectOneById(
 			@RequestParam("memberId") String memberId
@@ -153,12 +148,12 @@ public class MemberController {
 		try {
 			Member member = service.selectOneById(memberId);
 			if(member != null) {
-				// ¼º°ø -> ¼º°ø alertÃ¢ ¶ç¿î ÈÄ ¸¶ÀÌÆäÀÌÁö·Î ÀÌµ¿
+				// ì„±ê³µ -> alert ì„±ê³µ ë©”ì„¸ì§€ ì¶œë ¥ í›„ ë§ˆì´ í˜ì´ì§€
 				model.addAttribute("member", member);
 				return "member/myPage";
 			} else {
-				// ½ÇÆĞ -> ½ÇÆĞ alertÃ¢ ¶ç¿î ÈÄ ¸ŞÀÎÆäÀÌÁö
-				model.addAttribute("msg", "µ¥ÀÌÅÍ Á¶È¸¿¡ ½ÇÆĞÇß½À´Ï´Ù.");
+				// ì‹¤íŒ¨ -> alert ì‹¤íŒ¨ ë©”ì„¸ì§€ ì¶œë ¥ í›„ ë©”ì¸ í˜ì´ì§€
+				model.addAttribute("msg", "ë°ì´í„° ì¡°íšŒ ì‹¤íŒ¨!");
 				model.addAttribute("url", "/index.jsp");
 				return "common/serviceFailed";
 			}
@@ -167,7 +162,6 @@ public class MemberController {
 			model.addAttribute("msg", e.getMessage());
 			return "common/serviceFailed";
 		}
-		
 	}
 	
 	
