@@ -61,15 +61,15 @@ public class MemberStroeLogic implements MemberStore {
 	// 회원정보 수정 구현
 	@Override
 	public int updateMember(SqlSession session, Member member) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = session.update("MemberMapper.updateMember", member);
+		return result;
 	}
 
 	// 회원탈퇴 구현
 	@Override
 	public int deleteMember(SqlSession session, String memberId) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = session.delete("MemberMapper.deleteMember", memberId);
+		return result;
 	}
 
 }

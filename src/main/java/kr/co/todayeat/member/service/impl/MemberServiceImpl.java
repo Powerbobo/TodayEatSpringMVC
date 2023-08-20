@@ -68,15 +68,16 @@ public class MemberServiceImpl implements MemberService {
 	// 회원정보 수정 구현
 	@Override
 	public int updateMember(Member member) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = mStore.updateMember(sqlSession, member);
+		return result;
 	}
 
 	// 회원 탈퇴 구현
 	@Override
 	public int deleteMember(String memberId) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = mStore.deleteMember(sqlSession, memberId);
+		return result;
 	}
+	
 
 }

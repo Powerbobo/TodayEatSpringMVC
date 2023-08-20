@@ -16,41 +16,31 @@
 					<ul>
 						<li>
 							<label for="member-id">아이디</label>
-							<input type="text" id="memberId" name="memberId" value="${member.memberId}" readonly> <!-- 기능을 위한 id, 쿼리스트링 생성을 위한 name -->
-						</li>
-						<li>
-							<label for="memberPw">비밀번호</label>
-							<input type="password" id="memberPw" name="memberPw" value="${member.memberId}" >
-						</li>
-						<li>
-							<label for="memberPw">비밀번호 확인</label>
-							<input type="password" id="memberPwRe" name="memberPwRe" value="${member.memberId}" >
+							<span>${ member.memberId }</span>
 						</li>
 						<li>
 							<label for="memberName">이름</label>
-							<input type="text" id="memberName" name="memberName" value="${member.memberName}" readonly>
+							<span>${ member.memberName }</span>
 						</li>
 						<li>
 							<label for="memberPhone">전화번호</label>
-							<input type="text" id="memberPhone" name="memberPhone" value="${member.memberPhone}">
+							<span>${member.memberPhone }</span>
 						</li>
 						<li>
 							<label for="memberEmail">이메일</label>
-							<input type="text" id="memberEmail" name="memberEmail" value="${member.memberEmail}">
+							<span>${ member.memberEmail }</span>
 						</li>
 						<li>
 							<label for="memberAddress">주소</label>
-							<input type="text" id="memberAddress" name="memberAddress" value="${member.memberAddress}">
+							<span>${ member.memberAddress }</span>
 						</li>
 						<li>
 							<label for="memberGender">성별</label>
-							<!-- 선택했던 radio 버튼 유지  -->
-							 남<input type="radio" id="memberGender" name="memberGender" value="남" <c:if test="${ member.memberGender eq '남' }">checked</c:if>>
-							 여<input type="radio" id="memberGender" name="memberGender" value="여" <c:if test="${ member.memberGender eq '여' }">checked</c:if>>
+							<span>${ member.memberGender }</span>
 						</li>
 						<li>
 							<label for="memberBirthday">출생년도</label>
-							<input type="text" id="memberBirthday" name="memberBirthday" value="${member.memberBirthday}" readonly>
+							<span>${ member.memberBirthday }</span>
 						</li>
 					</ul> 
 					<br>
@@ -58,10 +48,8 @@
 				<div>
 					<br>
 					<a href="/index.jsp">메인 페이지</a>
-					<button type="submit">수정하기</button>
-					<a href="javascrip:void(0)" onclick="checkDelete();">탈퇴하기</a>
-		<%-- 		<a onclick="checkDelete()" href="/member/delete.do?memberId=${ sessionScope.memberId }">탈퇴하기</a> --%>
-		<!-- 		<button>탈퇴하기</button> -->
+					<a href="/member/update.do?memberId=${ member.memberId }">수정하기</a>
+					<a href="/member/delete.do?memberId=${ member.memberId }">탈퇴하기</a>
 				</div>
 			</form>
 		</main>

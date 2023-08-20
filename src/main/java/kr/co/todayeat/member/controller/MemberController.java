@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -164,12 +163,65 @@ public class MemberController {
 		}
 	}
 	
+	// 수정페이지 이동
+	@RequestMapping(value="/member/update.do", method=RequestMethod.GET)
+	public String showModifyForm(
+			@RequestParam("memberId") String memberId
+			, Model model) {
+		Member member = service.selectOneById(memberId);
+		model.addAttribute("member", member);
+		return "member/modify";
+	}
 	
+	// 회원정보 수정
+	@RequestMapping(value="/member/update.do", method=RequestMethod.POST)
+	public String modifyMember(
+			@ModelAttribute Member member
+			, Model model
+			) {
+		try {
+			int result = service.updateMember(member);
+			if(result > 0) {
+				// 성공 - 메인페이지
+				return "redirect:/index.jsp";
+			} else {
+				// 실패 - 마이페이지
+				model.addAttribute("error", "마이페이지 이동에 실패했습니다..");
+				model.addAttribute("msg", "데이터 조회 실패");
+				model.addAttribute("url", "/member/myPage.do?memberId=" + member.getMemberId());
+				return "member/serviceFailed";
+			}
+		} catch (Exception e) {
+			model.addAttribute("msg", "관리자에게 문의해주세요.");
+			model.addAttribute("error", e.getMessage());
+			model.addAttribute("url", "/index.jsp");
+			return "common/serviceFailed";
+		}
+	}
 	
-	
-	
-	
-	
+	// 회원 탈퇴하기
+	@RequestMapping(value="/member/delete.do", method=RequestMethod.GET)
+	public String outService(
+			@RequestParam("memberId") String memberId
+			, Model model) {
+		try {
+			int result = service.deleteMember(memberId);
+			if(result > 0) {
+				return "redirect:/member/logout.do";
+			} else {
+				// 실패하면 에러페이지로 이동
+				model.addAttribute("msg", "회원 탈퇴가 완료되지 않았습니다.");
+				model.addAttribute("error", "회원탈퇴 실패");
+				model.addAttribute("url", "/index.jsp");
+				return "common/errorPage";
+			}
+		} catch (Exception e) {
+			model.addAttribute("msg", "관리자에게 문의해주세요.");
+			model.addAttribute("error", e.getMessage());
+			model.addAttribute("url", "/index.jsp");
+			return "common/serviceFailed";
+		}
+	}
 	
 	
 	
