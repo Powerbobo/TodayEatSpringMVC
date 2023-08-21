@@ -7,8 +7,6 @@
 		<title>서비스 결과 성공</title>
 	</head>
 	<body>
-<!-- 		<h1>서비스 결과 성공!</h1> -->
-<%-- 		<h2>${requestScope.msg }</h2> --%>
 		<script>
 			const result = '${msg}';
 			const url = '${url}';

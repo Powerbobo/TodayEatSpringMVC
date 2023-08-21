@@ -58,6 +58,9 @@ main {
 .join > div > #joinAddr {
     margin-left: 58px;
 }
+#joinAddApi{
+    float: left;
+}
 input[type="radio"] {
     margin-left: 100px;
 }

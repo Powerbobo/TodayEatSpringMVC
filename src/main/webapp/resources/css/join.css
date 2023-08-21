@@ -37,14 +37,14 @@ main {
     padding-right: 35px;
     font-family: 'LINESeedKR-Bd';
 }
-.join > div > #joinId {
+.join > div > #joinId	 {
     margin-left: 45px;
 }
 .join > div > #joinPw1 {
     margin-left: 30px;
 }
 .join > div > #joinPwRe {
-    margin-left: 2px;
+    margin-left: none;
 }
 .join > div > #joinName {
     margin-left: 58px;
@@ -58,6 +58,11 @@ main {
 .join > div > #joinAddr {
     margin-left: 58px;
 }
+#joinAddApi {
+	position: relative;
+	left: 500px;
+	bottom : 55px;
+}
 input[type="radio"] {
     margin-left: 100px;
 }
@@ -67,6 +72,16 @@ input[type="date"] {
 }
 label {
     font-family: 'LINESeedKR-Bd';
+}
+#genderM {
+	position: relative;
+	left: 95px;
+	bottom : 1px;
+}
+#genderW {
+	position: relative;
+	left: 95px;
+	bottom : 1px;
 }
 
 #join-end > input {

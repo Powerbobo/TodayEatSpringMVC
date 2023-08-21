@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InquiryMapper">
+	
+	<resultMap type="Inquiry" id=""></resultMap>
+
+	<!-- 문의 등록 -->
+	<insert id="insertInquiry">
+		INSERT INTO INQUIRY_TBL VALUES(SEQ_INQUIRY_NO.NEXTVAL, #{ inquirySubject }, #{ inquiryContent }, #{ inquiryWriter }, DEFAULT, DEFAULT, #{ inquiryFilename }, #{ inquiryFilepath }, #{ inquiryFilelength }, DEFAULT)
+	</insert>
+	
+	<!-- 문의사항 전체 갯수 조회 -->
+	<select id="selectInquiryCount" resultType="_int">
+		SELECT COUNT(*) INQUIRY_TBL
+	</select>
+</mapper>

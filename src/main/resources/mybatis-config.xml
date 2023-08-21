@@ -12,5 +12,6 @@
 	<!--매퍼 만들고 등록 -->
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml" />
+		<mapper resource="mappers/inquiry-mapper.xml" />
 	</mappers>
 </configuration>

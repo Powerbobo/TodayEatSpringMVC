@@ -10,7 +10,7 @@
 	<%-- 	<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include> --%>
 			<main>
 				<h1>문의하기 작성</h1>
-				<form action="/inquiry/insert.do" method="post">
+				<form action="/inquiry/insert.do" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="inquiryWriter" value="${user-Id }">
 					<ul>
 						<li>
@@ -20,6 +20,11 @@
 						<li>
 							<label>내용</label>
 							<textarea rows="30" cols="40" id="" name="inquiryContent"></textarea>
+						</li>
+						<li>
+							<label>첨부파일</label>
+							<!-- String으로 받을 수 없고, 변환작업이 필요함 -->
+							<input type="file" name="uploadFile">
 						</li>
 					</ul>
 					<div>

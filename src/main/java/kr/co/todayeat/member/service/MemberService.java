@@ -1,10 +1,7 @@
 package kr.co.todayeat.member.service;
 
-import org.springframework.stereotype.Service;
-
 import kr.co.todayeat.member.domain.Member;
 
-@Service
 public interface MemberService {
 	
 	/**

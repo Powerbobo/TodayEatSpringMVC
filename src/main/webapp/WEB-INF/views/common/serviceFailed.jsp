@@ -9,8 +9,8 @@
 	<body>
 		<h1>${ error }</h1>
 		<script>
-			const result = "${msg}"
-			const url = "${url}";
+			const result = "${ msg }"
+// 			const url = "${url}";
 			alert(result);
 			location.href = url;
 		</script>

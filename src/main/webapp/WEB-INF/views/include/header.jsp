@@ -36,12 +36,12 @@
 				</li>
 				<!-- 마이페이지 -->
 				<li>
-					<c:if test="${userId eq null }">
+					<c:if test="${memberId eq null }">
 					
 					<!-- *** "로그인 후 이용해주세요."alert 창 띄우기 *** -->
 
 					</c:if>
-					<c:if test="${userId ne null }">
+					<c:if test="${memberId ne null }">
 						<a class="manu" href="/member/myPage.do?memberId=${ memberId }">마이페이지</a>
 					</c:if>
 				</li>

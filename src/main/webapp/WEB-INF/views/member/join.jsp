@@ -48,14 +48,14 @@
 	                    <div class="join-info" id="join-addr">
 	                        <span>주소 </span>
 	                        <input class="joinInfo" type="text" name="joinAddr" id="joinAddr" placeholder="주소를 입력하세요.">
+	                    	<input id="joinAddApi"type="button" onclick="sample4_execDaumPostcode();" value="우편번호 찾기">
+	                    	
 	                    </div>
 	                    <!-- 성별 선택 -->
 	                    <div class="join-info" id="join-gen">
 	                        <span>성별 </span>
-	                        <input type="radio" name="gender" id="gender"> 
-	                        <label for="genMen">남자</label>
-	                        <input type="radio" name="gender" id="gender"> 
-	                        <label for="genWom">여자</label>
+	                        <label for="genderMen" id="genderM">남</label><input type="radio" name="gender" id="genderMen" value="M"> 
+	                        <label for="genderWomen" id="genderW">여</label><input type="radio" name="gender" id="genderWomen" value="W"> 
 	                    </div>
 	                    <!-- 생년월일 입력 -->
 	                    <div class="join-info" id="join-bir">
@@ -69,6 +69,17 @@
 	                    </div>
 	                </div>
                 </form>
+                <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+				<script>
+					function sample4_execDaumPostcode() {
+						new daum.Postcode({
+							oncomplete : function(data) {
+								document.querySelector("#joinAddr")
+								.value= "(" +  data.zonecode + ")" + ", " + data.autoJibunAddress + ", " + data.buildingName;
+							}
+						}).open()
+					}
+				</script>
             </main>
 			<!-- footer -->
 			<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>

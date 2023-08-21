@@ -13,36 +13,35 @@
             <div>
             	<button onclick="ClickRegister();" type="button" id="inquiryBtn">1:1문의 등록하기</button>
             </div>
-	            <c:if test="${ userId eq null }">
+	            <c:if test="${ memberId eq null }">
 	            	<script>
 		            	alert("로그인을 해주세요");
 		    			location.href = "/member/login.do";
 	            	</script>
 	            </c:if>
-	            <c:if test="${ userId ne null }">
-		            <form action="/inquiry/list.do" method="post">
+	            <c:if test="${ memberId ne null }">
+<!-- 		            <form action="/inquiry/list.do" method="post"> -->
 		                <div id="inquiry">
 		                    <!-- 문의 목록 -->
 		                    <div id="list"><span>문의 목록</span></div>
 		                    <!-- 문의 등록하기 -->
-		                    
 		                    <hr>
 		                    <div>
 		                        <table>
 		                        	<thead>
-		                         	   <tr>
-		                            	    <th class="list-layer">번호</th>
-		                          	     <th class="list-layer">문의 날짜</th>
-		                         	       <th class="list-layer">제목</th>
-		                         	       <th class="list-layer">답변 여부</th>
-		                       	     </tr>
+		                         		<tr>
+		                            		<th class="list-layer">번호</th>
+		                         	    	<th class="list-layer">제목</th>
+		                          	     	<th class="list-layer">문의 날짜</th>
+		                         	    	<th class="list-layer">답변 여부</th>
+		                       	    	</tr>
 		                    	    </thead>
 		                    	    <tbody>
-		                    	    	<c:forEach var="inquiry" items="${ iList }">
+		                    	    	<c:forEach var="" items="" varStatus="">
 			                        		<tr>
 			                          		 	<td class="number">${ inquiry.inquiryNo }</td>
-			                          		 	<td class="date">${ inquiry.inquiryDate }</td>
 			                        			<td class="title"><a href="/inquiry/detail.do?inquiryNo=${ inquiry.inquiryNo }">${ inquiry.inquirySubject }</a></td>
+			                          		 	<td class="date">${ inquiry.iCreateDate }</td>
 			                       				<td class="answer">${ inquiry.inquiryYN }</td>
 			                          		</tr>
 		                          		</c:forEach>
@@ -50,10 +49,9 @@
 		                        </table>
 		                    </div>
 		                    <!-- 목록 페이지 -->
-		                    <a href="#"><div id="list-footer1"> 1 </div></a>
-		                    <a href="#"><div id="list-footer2"> 2 </div></a>
+		                    1, 2
 		                </div>
-		            </form>
+<!-- 		            </form> -->
 	            </c:if>
             </main>
 			<!-- footer -->
@@ -61,7 +59,7 @@
         </div>
         <script>
         	function ClickRegister() {
-        		location.href = '/inquiry/insert.do';
+        		location.href = "/inquiry/insert.do";
         	}
         </script>
     </body>

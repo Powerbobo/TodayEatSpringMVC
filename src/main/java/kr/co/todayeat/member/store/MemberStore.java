@@ -1,11 +1,9 @@
 package kr.co.todayeat.member.store;
 
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.stereotype.Repository;
 
 import kr.co.todayeat.member.domain.Member;
 
-@Repository
 public interface MemberStore {
 
 	/**
