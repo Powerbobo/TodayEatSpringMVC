@@ -105,6 +105,7 @@ public class InquiryController {
 			@RequestParam(value="page", required=false, defaultValue="1") Integer currentPage
 			, Model model) {
 		try {
+			// 문의사항 전체 갯수 조회 메소드
 			int totalCount = service.getListCount();
 			return "inquiry/list";
 		} catch (Exception e) {

@@ -12,7 +12,7 @@ public interface InquiryService {
 	int insertInquiry(Inquiry inquiry);
 
 	/**
-	 * 공지사항 전체 갯수 조회 Service
+	 * 문의사항 전체 갯수 조회 Service
 	 * @return int
 	 */
 	int getListCount();
