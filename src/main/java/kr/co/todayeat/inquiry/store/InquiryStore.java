@@ -1,9 +1,12 @@
 package kr.co.todayeat.inquiry.store;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 
 import kr.co.todayeat.inquiry.domain.Inquiry;
+import kr.co.todayeat.inquiry.domain.PageInfo;
 
 public interface InquiryStore {
 
@@ -21,5 +24,13 @@ public interface InquiryStore {
 	 * @return
 	 */
 	int selectInquiryCount(SqlSession session);
+
+	/**
+	 * 문의사항 목록 조회 Store
+	 * @param session
+	 * @param pInfo
+	 * @return List
+	 */
+	List<Inquiry> selectInquiryList(SqlSession session, PageInfo pInfo);
 
 }

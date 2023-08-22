@@ -63,14 +63,14 @@ td {
     font-family: 'Pretendard-Regular';
     padding: 12px;
 }
-.number {
-    text-align: center;
-}
 .list-layer {
     font-family: 'LINESeedKR-Bd';
     text-align: center;
     background-color: #F8F1CB;
     font-size: 19px;
+}
+.number {
+    text-align: center;
 }
 .date {
     text-align: center;

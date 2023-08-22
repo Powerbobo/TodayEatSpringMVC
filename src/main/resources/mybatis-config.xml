@@ -8,6 +8,7 @@
 	</settings>
 	<typeAliases>
 		<typeAlias type="kr.co.todayeat.member.domain.Member" alias="Member" />
+		<typeAlias type="kr.co.todayeat.inquiry.domain.Inquiry" alias="Inquiry" />
 	</typeAliases>
 	<!--매퍼 만들고 등록 -->
 	<mappers>

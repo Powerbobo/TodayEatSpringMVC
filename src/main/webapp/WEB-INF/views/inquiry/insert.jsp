@@ -15,7 +15,7 @@
 					<ul>
 						<li>
 							<label>제목</label>
-							<input type="text" id="" name="inquirySubject">
+							<input type="text" name="inquirySubject">
 						</li>
 						<li>
 							<label>내용</label>

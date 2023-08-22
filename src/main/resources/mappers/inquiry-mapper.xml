@@ -4,15 +4,30 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="InquiryMapper">
 	
-	<resultMap type="Inquiry" id=""></resultMap>
+	<resultMap type="Inquiry" id="inquiryResultMap">
+		<id property="inquiryNo" column="INQUIRY_NO" />
+		<result property="inquirySubject" 	 column="INQUIRY_SUBJECT" />
+		<result property="inquiryContent" 	 column="INQUIRY_CONTENT" />
+		<result property="inquiryWriter" 	 column="INQUIRY_WRITER" />
+		<result property="iCreateDate" 		 column="I_CREATE_DATE" />
+		<result property="iUpdateDate" 		 column="I_UPDATE_DATE" />
+		<result property="inquiryFilename" 	 column="INQUIRY_FILENAME" />
+		<result property="inquiryFilepath"	 column="INQUIRY_FILEPATH" />
+		<result property="inquiryFilelength" column="INQUIRY_FILELENGTH" />
+		<result property="inquiryYn" 		 column="INQUIRY_YN" />
+	</resultMap>
 
 	<!-- 문의 등록 -->
 	<insert id="insertInquiry">
 		INSERT INTO INQUIRY_TBL VALUES(SEQ_INQUIRY_NO.NEXTVAL, #{ inquirySubject }, #{ inquiryContent }, #{ inquiryWriter }, DEFAULT, DEFAULT, #{ inquiryFilename }, #{ inquiryFilepath }, #{ inquiryFilelength }, DEFAULT)
 	</insert>
 	
-	<!-- 문의사항 전체 갯수 조회 -->
+	<!-- 문의사항 전체 갯수 가져오기 -->
 	<select id="selectInquiryCount" resultType="_int">
-		SELECT COUNT(*) INQUIRY_TBL
+		SELECT COUNT(*) FROM INQUIRY_TBL
+	</select>
+	
+	<select id="selectInquiryList" resultMap="inquiryResultMap">
+		SELECT * FROM INQUIRY_TBL ORDER BY INQUIRY_NO DESC
 	</select>
 </mapper>
