@@ -1,11 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<!-- head -->
-	<jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/include/head_inquiry.jsp"></jsp:include>
     <body>
         <div id="container">
 	        <!-- header -->
@@ -30,6 +29,7 @@
 	                        <table>
 	                        	<thead>
 	                         		<tr>
+	                         			<!-- *************** 테이블 제목 *************** -->
 	                            		<th class="list-layer">번호</th>
 	                         	    	<th class="list-layer">제목</th>
 	                          	     	<th class="list-layer">문의 날짜</th>
@@ -38,6 +38,7 @@
 	                       	    	</tr>
 	                    	    </thead>
 	                    	    <tbody>
+	                    	    	<!-- *************** 테이블 내용 *************** -->
 	                    	    	<c:forEach var="inquiry" items="${ iList }" varStatus="i">
 		                        		<tr>
 		                          		 	<td class="number">${ inquiry.inquiryNo }</td>
@@ -54,9 +55,10 @@
 	                          		</c:forEach>
 	                        	</tbody>
 	                        	<tfoot>
+	                        		<!-- *************** 테이블 네비게이션 *************** -->
 	                        		<tr align="center">
 	                        			<td colspan="5">
-	                        				<c:forEach begin="${ pInfo.startNavi }" end=" ${ pInfo.endNavo }" var="p">
+	                        				<c:forEach begin="${ pInfo.startNavi }" end="${ pInfo.endNavi }" var="p">
 	                        					<!-- var : 변수명, value : url -->
 	                        					<c:url var="pageUrl" value="/inquiry/list.do">
 	                        						<!-- 쿼리 스트링 -->
@@ -65,6 +67,19 @@
 	                        					<a href="${ pageUrl }">${ p }</a>&nbsp;
 	                        				</c:forEach>
 	                        			</td>
+	                        		</tr>
+	                        		<tr>
+	                        			<!-- *************** 테이블 검색 옵션 *************** -->
+	                        			<td colspan="5">
+	                        			<form action="/inquiry/search.do" method="get">
+	                        				<select name="searchCondition">
+	                        					<option value="all">전체</option>
+	                        					<option value="title">제목</option>
+	                        					<option value="content">내용</option>
+	                        				</select>
+	                        				<input type="text" name="searchKeyword" placeholder="검색어를 이용하세요">
+	                        				<input type="submit" value="검색">
+	                        			</form>
 	                        		</tr>
 	                        	</tfoot>
 	                        </table>

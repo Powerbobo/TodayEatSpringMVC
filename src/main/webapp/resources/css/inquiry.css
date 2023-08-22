@@ -9,13 +9,10 @@ main {
 }
 #list {
     --border: 1px solid #ccc;
-    width: 150px;
+    --width: 150px;
     padding: 10px;
     text-align: center;
     margin: 50px 50px;
-    position: relative;
-    top: 55px;
-    left: 430px;
 }
 #list > span {
     font-family: 'LINESeedKR-Bd';

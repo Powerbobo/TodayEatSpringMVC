@@ -4,7 +4,7 @@ public class PageInfo {
 
 	// 필드
 	private int currentPage;
-	private int recordCoutnPerPage;
+	private int recordCountPerPage;
 	private int naviCountPerPage;
 	private int startNavi;
 	private int endNavi;
@@ -22,7 +22,7 @@ public class PageInfo {
 			int totalCount, int naviTotalCount) {
 		super();
 		this.currentPage = currentPage;
-		this.recordCoutnPerPage = recordCoutnPerPage;
+		this.recordCountPerPage = recordCoutnPerPage;
 		this.naviCountPerPage = naviCountPerPage;
 		this.startNavi = startNavi;
 		this.endNavi = endNavi;
@@ -37,11 +37,11 @@ public class PageInfo {
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
 	}
-	public int getRecordCoutnPerPage() {
-		return recordCoutnPerPage;
+	public int getRecordCountPerPage() {
+		return recordCountPerPage;
 	}
-	public void setRecordCoutnPerPage(int recordCoutnPerPage) {
-		this.recordCoutnPerPage = recordCoutnPerPage;
+	public void setRecordCountPerPage(int recordCoutnPerPage) {
+		this.recordCountPerPage = recordCoutnPerPage;
 	}
 	public int getNaviCountPerPage() {
 		return naviCountPerPage;
@@ -77,7 +77,7 @@ public class PageInfo {
 	// toString() - 데이터 확인용
 	@Override
 	public String toString() {
-		return "PageInfo [currentPage=" + currentPage + ", recordCoutnPerPage=" + recordCoutnPerPage
+		return "PageInfo [currentPage=" + currentPage + ", recordCoutnPerPage=" + recordCountPerPage
 				+ ", naviCountPerPage=" + naviCountPerPage + ", startNavi=" + startNavi + ", endNavi=" + endNavi
 				+ ", totalCount=" + totalCount + ", naviTotalCount=" + naviTotalCount + "]";
 	}

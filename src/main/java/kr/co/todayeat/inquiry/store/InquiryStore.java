@@ -1,6 +1,7 @@
 package kr.co.todayeat.inquiry.store;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,22 @@ public interface InquiryStore {
 	 * @return List
 	 */
 	List<Inquiry> selectInquiryList(SqlSession session, PageInfo pInfo);
+
+	/**
+	 * 공지사항 검색 게시물 전체 갯수 Store
+	 * @param session
+	 * @param paramMap
+	 * @return int
+	 */
+	int selectListCount(SqlSession session, Map<String, String> paramMap);
+
+	/**
+	 * 공지사항 조건에 따라 키워드로 검색 Store
+	 * @param session
+	 * @param paramMap
+	 * @return List
+	 */
+	List<Inquiry> searchInquiryKeyword(SqlSession session, PageInfo pInfo, Map<String, String> paramMap);
+
 
 }

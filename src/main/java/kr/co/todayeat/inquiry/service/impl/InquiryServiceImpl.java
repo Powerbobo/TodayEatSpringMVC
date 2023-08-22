@@ -1,6 +1,7 @@
 package kr.co.todayeat.inquiry.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,20 @@ public class InquiryServiceImpl implements InquiryService{
 	@Override
 	public List<Inquiry> selectInquiryList(PageInfo pInfo) {
 		List<Inquiry> iList = iStore.selectInquiryList(session, pInfo);
+		return iList;
+	}
+
+	// 공지사항 검색 게시물 전체 갯수
+	@Override
+	public int getListCount(Map<String, String> paramMap) {
+		int result = iStore.selectListCount(session, paramMap);
+		return result;
+	}
+
+	// 공지사항 조건에 따라 키워드로 검색
+	@Override
+	public List<Inquiry> searchInquiryKeyword(PageInfo pInfo, Map<String, String> paramMap) {
+		List<Inquiry> iList = iStore.searchInquiryKeyword(session, pInfo, paramMap);
 		return iList;
 	}
 

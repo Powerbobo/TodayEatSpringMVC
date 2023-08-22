@@ -27,7 +27,42 @@
 		SELECT COUNT(*) FROM INQUIRY_TBL
 	</select>
 	
+	<!-- 문의글 가져오기 -->
 	<select id="selectInquiryList" resultMap="inquiryResultMap">
 		SELECT * FROM INQUIRY_TBL ORDER BY INQUIRY_NO DESC
+	</select>
+	
+	<!-- 공지사항 검색 게시물 전체 갯수 -->
+	<select id="selectListByKeywordCount" resultType="_int">
+		SELECT COUNT(*) FROM INQUIRY_TBL
+		<!-- 조건 : 전체 -->
+		<if test="searchCondition == 'all'">
+			WHERE INQUIRY_SUBJECT LIKE '%'||#{ searchKeyword }||'%' OR INQUIRY_CONTENT LIKE '%'||#{ searchKeyword }||'%'
+		</if>
+		<!-- 조건 : 제목 -->
+		<if test="searchCondition == 'title'">
+			WHERE INQUIRY_SUBJECT LIKE '%'||#{ searchKeyword }||'%'
+		</if>
+		<!-- 조건 : 내용 -->
+		<if test="searchCondition == 'content'">
+			WHERE INQUIRY_CONTENT LIKE '%'||#{ searchKeyword }||'%'
+		</if>
+	</select>
+	
+	<!-- 공지사항 조건에 따라 키워드로 검색 -->
+	<select id="searchInquiryByKeyword" resultMap="inquiryResultMap">
+		SELECT * FROM INQUIRY_TBL
+		<!-- 조건 : 전체 -->
+		<if test="searchCondition == 'all'">
+			WHERE INQUIRY_SUBJECT LIKE '%'||#{ searchKeyword }||'%' OR INQUIRY_CONTENT LIKE '%'||#{ searchKeyword }||'%'
+		</if>
+		<!-- 조건 : 제목 -->
+		<if test="searchCondition == 'title'">
+			WHERE INQUIRY_SUBJECT LIKE '%'||#{ searchKeyword }||'%'
+		</if>
+		<!-- 조건 : 내용 -->
+		<if test="searchCondition == 'content'">
+			WHERE INQUIRY_CONTENT LIKE '%'||#{ searchKeyword }||'%'
+		</if>
 	</select>
 </mapper>

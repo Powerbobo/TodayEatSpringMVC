@@ -1,6 +1,7 @@
 package kr.co.todayeat.inquiry.store.logic;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -30,11 +31,30 @@ public class InquiryStorelogic implements InquiryStore{
 	// 문의사항 게시판 리스트 가져오기
 	@Override
 	public List<Inquiry> selectInquiryList(SqlSession session, PageInfo pInfo) {
-		int limit = pInfo.getRecordCoutnPerPage();
+		int limit = pInfo.getRecordCountPerPage();
 		int offset = (pInfo.getCurrentPage()-1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		List<Inquiry> iList = session.selectList("InquiryMapper.selectInquiryList", null, rowBounds);
 		return iList;
 	}
+
+	// 공지사항 검색 게시물 전체 갯수
+	@Override
+	public int selectListCount(SqlSession session, Map<String, String> paramMap) {
+		int result = session.selectOne("InquiryMapper.selectListByKeywordCount", paramMap);
+		return result;
+	}
+
+	// 공지사항 조건에 따라 키워드로 검색
+	@Override
+	public List<Inquiry> searchInquiryKeyword(SqlSession session, PageInfo pInfo, Map<String, String> paramMap) {
+		int limit = pInfo.getRecordCountPerPage();
+		int offset = (pInfo.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		List<Inquiry> searchList = session.selectList("InquiryMapper.searchInquiryByKeyword", paramMap, rowBounds);
+		return searchList;
+	}
+
+
 	
 }
