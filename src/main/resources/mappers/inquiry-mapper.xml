@@ -34,7 +34,7 @@
 	</select>
 	
 	<!-- 문의사항 번호로 조회 -->
-	<select id="showInquiryByNo" resultMap="inquiryResultMap">
+	<select id="selectInquiryByNo" resultMap="inquiryResultMap">
 		SELECT * FROM INQUIRY_TBL WHERE INQUIRY_NO = #{ inquiryNo }
 	</select>
 	

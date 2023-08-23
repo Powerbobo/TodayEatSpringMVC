@@ -58,8 +58,8 @@ public class InquiryServiceImpl implements InquiryService{
 
 	// 문의사항 번호로 조회
 	@Override
-	public Inquiry showInquiryByNo(Integer inquiryNo) {
-		Inquiry inqiury = iStore.showInquiryByNo(session, inquiryNo);
+	public Inquiry selectInquiryByNo(Integer inquiryNo) {
+		Inquiry inqiury = iStore.selectInquiryByNo(session, inquiryNo);
 		return inqiury;
 	}
 

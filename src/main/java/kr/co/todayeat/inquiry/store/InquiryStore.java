@@ -56,7 +56,7 @@ public interface InquiryStore {
 	 * @param inquiryNo
 	 * @return Inquiry
 	 */
-	Inquiry showInquiryByNo(SqlSession session, Integer inquiryNo);
+	Inquiry selectInquiryByNo(SqlSession session, Integer inquiryNo);
 
 
 }

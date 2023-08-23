@@ -57,8 +57,8 @@ public class InquiryStorelogic implements InquiryStore{
 
 	// 문의사항 번호로 조회
 	@Override
-	public Inquiry showInquiryByNo(SqlSession session, Integer inquiryNo) {
-		Inquiry inquiry = session.selectOne("InquiryMapper.showInquiryByNo", inquiryNo);
+	public Inquiry selectInquiryByNo(SqlSession session, Integer inquiryNo) {
+		Inquiry inquiry = session.selectOne("InquiryMapper.selectInquiryByNo", inquiryNo);
 		return inquiry;
 	}
 

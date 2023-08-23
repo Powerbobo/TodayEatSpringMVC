@@ -48,6 +48,6 @@ public interface InquiryService {
 	 * @param inquiryNo
 	 * @return Inquiry
 	 */
-	Inquiry showInquiryByNo(Integer inquiryNo);
+	Inquiry selectInquiryByNo(Integer inquiryNo);
 	
 }

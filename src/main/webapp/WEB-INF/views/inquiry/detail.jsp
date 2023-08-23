@@ -59,7 +59,7 @@
 		<script>
 			function showModifyPage() {
 				const noticeNo = "${ inquiry.inquiryNo }";
-				location.href="/inquiry/modify.do?inquiry=" + noticeNo;
+				location.href="/inquiry/modify.do?inquiryNo=" + noticeNo;
 			}
 			
 			function showListPage() {
@@ -69,7 +69,7 @@
 			const deleteCheck = () => {
 				const notcieNo = "${notice.noticeNo}";
 				if(confirm("정말 삭제하시겠습니까?")){
-					location.href="/notice/delete.do?noticeNO="+noticeNo;
+					location.href="/inquiry/delete.do?noticeNo="+noticeNo;
 				}
 			} 
 		</script>
