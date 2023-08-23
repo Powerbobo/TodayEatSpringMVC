@@ -12,14 +12,40 @@ public class Inquiry {
 	private Timestamp iCreateDate;
 	private Timestamp iUpdateDate;
 	private String inquiryFilename;
+	private String inquiryFileRename;
 	private String inquiryFilepath;
 	private long inquiryFilelength;
 	private String inquiryYn;
-
+	
+	// 기본 생성자
+	public Inquiry() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	// 매개변수 생성자
+	public Inquiry(int inquiryNo, String inquirySubject, String inquiryContent, String inquiryWriter,
+			Timestamp iCreateDate, Timestamp iUpdateDate, String inquiryFilename, String inquiryFileRename,
+			String inquiryFilepath, long inquiryFilelength, String inquiryYn) {
+		super();
+		this.inquiryNo = inquiryNo;
+		this.inquirySubject = inquirySubject;
+		this.inquiryContent = inquiryContent;
+		this.inquiryWriter = inquiryWriter;
+		this.iCreateDate = iCreateDate;
+		this.iUpdateDate = iUpdateDate;
+		this.inquiryFilename = inquiryFilename;
+		this.inquiryFileRename = inquiryFileRename;
+		this.inquiryFilepath = inquiryFilepath;
+		this.inquiryFilelength = inquiryFilelength;
+		this.inquiryYn = inquiryYn;
+	}
+	
 	// getter, setter 메소드
 	public int getInquiryNo() {
 		return inquiryNo;
 	}
+
 
 	public void setInquiryNo(int inquiryNo) {
 		this.inquiryNo = inquiryNo;
@@ -97,13 +123,22 @@ public class Inquiry {
 		this.inquiryYn = inquiryYn;
 	}
 
+	public String getInquiryFileRename() {
+		return inquiryFileRename;
+	}
+
+	public void setInquiryFileRename(String inquiryFileRename) {
+		this.inquiryFileRename = inquiryFileRename;
+	}
+
 	// toString() - 데이터 확인용
 	@Override
 	public String toString() {
-		return "문의하기 [inquiryNo=" + inquiryNo + ", inquirySubject=" + inquirySubject + ", inquiryContent="
-				+ inquiryContent + ", inquiryWriter=" + inquiryWriter + ", iCreateDate=" + iCreateDate
-				+ ", iUpdateDate=" + iUpdateDate + ", inquiryFilename=" + inquiryFilename + ", inquiryFilepath="
-				+ inquiryFilepath + ", inquiryFilelength=" + inquiryFilelength + ", inquiryYn=" + inquiryYn + "]";
+		return "문의하기 [번호=" + inquiryNo + ", 제목=" + inquirySubject + ", 내용="
+				+ inquiryContent + ", 작성자=" + inquiryWriter + ", 작성날짜=" + iCreateDate
+				+ ", 수정날짜=" + iUpdateDate + ", 파일이름=" + inquiryFilename + ", 파일리네임=" + inquiryFileRename
+				+ ", 파일경로=" + inquiryFilepath + ", 파일크기=" + inquiryFilelength 
+				+ ", 답변여부=" + inquiryYn + "]";
 	}
 	
 }

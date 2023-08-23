@@ -1,7 +1,10 @@
 package kr.co.todayeat.inquiry.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,15 +32,6 @@ public class InquiryController {
 
 	
 	/**
-	 * 문의 등록 페이지이동 Controller
-	 * @return String
-	 */
-	@RequestMapping(value="/inquiry/insert.do", method=RequestMethod.GET)
-	public String showinsertForm() {
-		return "inquiry/insert";
-	}
-	
-	/**
 	 * 문의 등록하기 Controller
 	 * @param inquiry
 	 * @param uploadFile
@@ -53,27 +47,18 @@ public class InquiryController {
 			, Model model) {
 		try {
 			// ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 파일 첨부 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-			if(!uploadFile.getOriginalFilename().equals("")) {
-				// ============================== 파일 이름 ==============================
-				String fileName = uploadFile.getOriginalFilename();
-				String root = request.getSession().getServletContext().getRealPath("resources");
-				String saveFolder = root + "\\iuploadFiles";
-				File folder = new File(saveFolder);
-				if(!folder.exists()) { // 해당 경로에 파일 있는지 여부 확인
-					// 없을 경우 폴더 생성
-					folder.mkdir();
-				}
-				// ============================== 파일 경로 ==============================
-				String savePath = saveFolder + "\\" + fileName;
-				File file = new File(saveFolder);
-				// ****************************** 파일 저장 ******************************
-				uploadFile.transferTo(file);
-				// ============================== 파일 크기 ==============================
-				long fileLength = uploadFile.getSize();
+			// 파일이 있는지 여부 유효선 검사 후 파일 첨부 진행
+			if(uploadFile != null && !uploadFile.getOriginalFilename().equals("")) {
+				Map<String, Object> iMap = this.saveFile(uploadFile, request);
+				String fileName = (String)iMap.get("fileName");
+				String fileRename = (String)iMap.get("fileRename");
+				String filePath = (String)iMap.get("filePath");
+				long fileLength = (long)iMap.get("fileLength");
 				
 				// DB에 저장하기 위해 inquiry에 데이터를 Set 하는 부분
 				inquiry.setInquiryFilename(fileName);
-				inquiry.setInquiryFilepath(savePath);
+				inquiry.setInquiryFileRename(fileRename);
+				inquiry.setInquiryFilepath(filePath);
 				inquiry.setInquiryFilelength(fileLength);
 			}
 			
@@ -98,6 +83,15 @@ public class InquiryController {
 			return "common/serviceFailed";
 		}
 		
+	}
+
+	/**
+	 * 문의 등록 페이지이동 Controller
+	 * @return String
+	 */
+	@RequestMapping(value="/inquiry/insert.do", method=RequestMethod.GET)
+	public String showinsertForm() {
+		return "inquiry/insert";
 	}
 	
 	/**
@@ -133,38 +127,14 @@ public class InquiryController {
 		}
 	}
 	
-	/**
-	 * 페이지 네비게이션
-	 * @param currentPage
-	 * @param totalCount
-	 * @return PageInfo
-	 */
-	public PageInfo getPageInfo(int currentPage, int totalCount) {
-		PageInfo pi = null;
-		int recordCountPerPage = 10;
-		int naviCountPerPage = 10;
-		int naviTotalCount;
-		int startNavi;
-		int endNavi;
-		
-		// 전체 페이지 갯수
-		naviTotalCount = (int)(((double)totalCount/recordCountPerPage)+ 0.9);
-		
-		// 한 페이지의 시작 값
-		startNavi = (((int)(((double)currentPage/naviCountPerPage) + 0.9))-1) * naviCountPerPage + 1;
-		
-		// 한 페이지의 끝 값
-		endNavi = startNavi + naviCountPerPage -1;
-		
-		// endNavi는 startNavi에 무조건 naviCountPerPage값을 더하므로 실제 최대값보다 커질 수 있음
-		// 총 페이지 12일때 endNavi가 15가 될 수 있음. 그것을 방지하기 위해서 아래 식 작성
-		if(endNavi > naviTotalCount) {
-			endNavi = naviTotalCount;
-		}
-		
-		// PageInfo Class를 만들어서 모든 변수를 담고, 해당 클래스를 이용해서 리턴
-		pi = new PageInfo(currentPage, recordCountPerPage, naviCountPerPage, startNavi, endNavi, totalCount, naviTotalCount);
-		return pi;
+	// 문의사항 번호로 조회
+	@RequestMapping(value="/inquiry/detail.do", method=RequestMethod.GET)
+	public String showDetailForm(
+			@RequestParam("inquiryNo") Integer inquiryNo
+			, Model model) {
+		Inquiry inquiry = service.showInquiryByNo(inquiryNo);
+		model.addAttribute("inquiry", inquiry);
+		return "inquiry/detail";
 	}
 	
 	// 네비게이션 검색하기
@@ -212,8 +182,80 @@ public class InquiryController {
 			return "common/serviceFailed";
 		}
 	}
+
+	/**
+	 * 페이지 네비게이션
+	 * @param currentPage
+	 * @param totalCount
+	 * @return PageInfo
+	 */
+	public PageInfo getPageInfo(int currentPage, int totalCount) {
+		PageInfo pi = null;
+		int recordCountPerPage = 10;
+		int naviCountPerPage = 10;
+		int naviTotalCount;
+		int startNavi;
+		int endNavi;
+		
+		// 전체 페이지 갯수
+		naviTotalCount = (int)(((double)totalCount/recordCountPerPage)+ 0.9);
+		
+		// 한 페이지의 시작 값
+		startNavi = (((int)(((double)currentPage/naviCountPerPage) + 0.9))-1) * naviCountPerPage + 1;
+		
+		// 한 페이지의 끝 값
+		endNavi = startNavi + naviCountPerPage -1;
+		
+		// endNavi는 startNavi에 무조건 naviCountPerPage값을 더하므로 실제 최대값보다 커질 수 있음
+		// 총 페이지 12일때 endNavi가 15가 될 수 있음. 그것을 방지하기 위해서 아래 식 작성
+		if(endNavi > naviTotalCount) {
+			endNavi = naviTotalCount;
+		}
+		
+		// PageInfo Class를 만들어서 모든 변수를 담고, 해당 클래스를 이용해서 리턴
+		pi = new PageInfo(currentPage, recordCountPerPage, naviCountPerPage, startNavi, endNavi, totalCount, naviTotalCount);
+		return pi;
+	}
 	
-	
+	// 파일 이름/경로/크기 가져오기
+	public Map<String, Object> saveFile(MultipartFile uploadFile, HttpServletRequest request) throws Exception {
+		// 이름/경로/크기 총 3개를 넘겨야 하기 때문에 Hashmap 사용함!
+		Map<String, Object> infoMap	 = new HashMap<String, Object>();
+		
+		// ============================== 파일 이름 ==============================
+		// FileRename
+		
+		String fileName = uploadFile.getOriginalFilename();
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String saveFolder = root + "\\iuploadFiles";
+		File folder = new File(saveFolder);
+		if(!folder.exists()) { // 해당 경로에 파일 있는지 여부 확인
+			// 없을 경우 폴더 생성
+			folder.mkdir();
+		}
+		// ============================== 파일 경로 ==============================
+		// FileRename 으로 저장되게끔 함!
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHss");
+		String strResult = sdf.format(new Date(System.currentTimeMillis()));
+		
+		// 파일 이름에서 확장자명 추출하기
+		String ext = fileName.substring(fileName.lastIndexOf(".")+1);
+		String fileRename = "N" + strResult + "." + ext;
+		
+		String savePath = saveFolder + "\\" + fileRename;
+		File file = new File(savePath);
+		// ****************************** 파일 저장 ******************************
+		uploadFile.transferTo(file);
+		// ============================== 파일 크기 ==============================
+		long fileLength = uploadFile.getSize();
+		
+		// DB에 저장하기 위해 inquiry에 데이터를 Set 하는 부분
+		infoMap.put("fileName", fileName);
+		infoMap.put("fileRename", fileRename);
+		infoMap.put("filePath", savePath);
+		infoMap.put("fileLength", fileLength);
+		return infoMap;
+	}
 	
 	
 	

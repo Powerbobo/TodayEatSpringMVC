@@ -35,7 +35,7 @@ public interface InquiryStore {
 	List<Inquiry> selectInquiryList(SqlSession session, PageInfo pInfo);
 
 	/**
-	 * 공지사항 검색 게시물 전체 갯수 Store
+	 * 문의사항 검색 게시물 전체 갯수 Store
 	 * @param session
 	 * @param paramMap
 	 * @return int
@@ -43,12 +43,20 @@ public interface InquiryStore {
 	int selectListCount(SqlSession session, Map<String, String> paramMap);
 
 	/**
-	 * 공지사항 조건에 따라 키워드로 검색 Store
+	 * 문의사항 조건에 따라 키워드로 검색 Store
 	 * @param session
 	 * @param paramMap
 	 * @return List
 	 */
 	List<Inquiry> searchInquiryKeyword(SqlSession session, PageInfo pInfo, Map<String, String> paramMap);
+
+	/**
+	 * 문의사항 번호로 조회 Store
+	 * @param session
+	 * @param inquiryNo
+	 * @return Inquiry
+	 */
+	Inquiry showInquiryByNo(SqlSession session, Integer inquiryNo);
 
 
 }

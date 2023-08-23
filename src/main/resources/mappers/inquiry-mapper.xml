@@ -19,7 +19,7 @@
 
 	<!-- 문의 등록 -->
 	<insert id="insertInquiry">
-		INSERT INTO INQUIRY_TBL VALUES(SEQ_INQUIRY_NO.NEXTVAL, #{ inquirySubject }, #{ inquiryContent }, #{ inquiryWriter }, DEFAULT, DEFAULT, #{ inquiryFilename }, #{ inquiryFilepath }, #{ inquiryFilelength }, DEFAULT)
+		INSERT INTO INQUIRY_TBL VALUES(SEQ_INQUIRY_NO.NEXTVAL, #{ inquirySubject }, #{ inquiryContent }, #{ inquiryWriter }, DEFAULT, DEFAULT, #{ inquiryFilename }, #{ inquiryFileRename }, #{ inquiryFilepath }, #{ inquiryFilelength }, DEFAULT)
 	</insert>
 	
 	<!-- 문의사항 전체 갯수 가져오기 -->
@@ -30,6 +30,11 @@
 	<!-- 문의글 가져오기 -->
 	<select id="selectInquiryList" resultMap="inquiryResultMap">
 		SELECT * FROM INQUIRY_TBL ORDER BY INQUIRY_NO DESC
+	</select>
+	
+	<!-- 문의사항 번호로 조회 -->
+	<select id="showInquiryByNo" resultMap="inquiryResultMap">
+		SELECT * FROM INQUIRY_TBL WHERE INQUIRY_NO = #{ inquiryNo }
 	</select>
 	
 	<!-- 공지사항 검색 게시물 전체 갯수 -->

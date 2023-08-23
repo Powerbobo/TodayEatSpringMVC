@@ -42,5 +42,12 @@ public interface InquiryService {
 	 * @return List
 	 */
 	List<Inquiry> searchInquiryKeyword(PageInfo pInfo, Map<String, String> paramMap);
+
+	/**
+	 * 문의사항 번호로 조회 Service
+	 * @param inquiryNo
+	 * @return Inquiry
+	 */
+	Inquiry showInquiryByNo(Integer inquiryNo);
 	
 }

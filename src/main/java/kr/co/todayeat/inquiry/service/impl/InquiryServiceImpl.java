@@ -42,18 +42,25 @@ public class InquiryServiceImpl implements InquiryService{
 		return iList;
 	}
 
-	// 공지사항 검색 게시물 전체 갯수
+	// 문의사항 검색 게시물 전체 갯수
 	@Override
 	public int getListCount(Map<String, String> paramMap) {
 		int result = iStore.selectListCount(session, paramMap);
 		return result;
 	}
 
-	// 공지사항 조건에 따라 키워드로 검색
+	// 문의사항 조건에 따라 키워드로 검색
 	@Override
 	public List<Inquiry> searchInquiryKeyword(PageInfo pInfo, Map<String, String> paramMap) {
 		List<Inquiry> iList = iStore.searchInquiryKeyword(session, pInfo, paramMap);
 		return iList;
+	}
+
+	// 문의사항 번호로 조회
+	@Override
+	public Inquiry showInquiryByNo(Integer inquiryNo) {
+		Inquiry inqiury = iStore.showInquiryByNo(session, inquiryNo);
+		return inqiury;
 	}
 
 }

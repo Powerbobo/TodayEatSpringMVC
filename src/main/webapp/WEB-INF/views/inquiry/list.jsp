@@ -42,7 +42,11 @@
 	                    	    	<c:forEach var="inquiry" items="${ iList }" varStatus="i">
 		                        		<tr>
 		                          		 	<td class="number">${ inquiry.inquiryNo }</td>
-		                        			<td class="title"><a href="/inquiry/detail.do?inquiryNo=${ inquiry.inquiryNo }">${ inquiry.inquirySubject }</a></td>
+											<%-- <td class="title"><a href="/inquiry/detail.do?inquiryNo=${ inquiry.inquiryNo }">${ inquiry.inquirySubject }</a></td> --%>
+		                          		 	<c:url var="detailUrl" value="/inquiry/detail.do">
+		                          		 		<c:param name="inquiryNo" value="${ inquiry.inquiryNo }"></c:param>
+		                          		 	</c:url>
+		                          		 	<td><a href="${ detailUrl }">${ inquiry.inquirySubject }</a></td>
 		                          		 	<td class="date">
 		                          		 		<fmt:formatDate pattern="YYYY-MM-dd" value="${ inquiry.iCreateDate }"/>
 		                          		 	</td>

@@ -38,14 +38,14 @@ public class InquiryStorelogic implements InquiryStore{
 		return iList;
 	}
 
-	// 공지사항 검색 게시물 전체 갯수
+	// 문의사항 검색 게시물 전체 갯수
 	@Override
 	public int selectListCount(SqlSession session, Map<String, String> paramMap) {
 		int result = session.selectOne("InquiryMapper.selectListByKeywordCount", paramMap);
 		return result;
 	}
 
-	// 공지사항 조건에 따라 키워드로 검색
+	// 문의사항 조건에 따라 키워드로 검색
 	@Override
 	public List<Inquiry> searchInquiryKeyword(SqlSession session, PageInfo pInfo, Map<String, String> paramMap) {
 		int limit = pInfo.getRecordCountPerPage();
@@ -53,6 +53,13 @@ public class InquiryStorelogic implements InquiryStore{
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		List<Inquiry> searchList = session.selectList("InquiryMapper.searchInquiryByKeyword", paramMap, rowBounds);
 		return searchList;
+	}
+
+	// 문의사항 번호로 조회
+	@Override
+	public Inquiry showInquiryByNo(SqlSession session, Integer inquiryNo) {
+		Inquiry inquiry = session.selectOne("InquiryMapper.showInquiryByNo", inquiryNo);
+		return inquiry;
 	}
 
 
