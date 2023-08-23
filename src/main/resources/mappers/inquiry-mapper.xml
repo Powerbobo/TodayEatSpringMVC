@@ -12,6 +12,7 @@
 		<result property="iCreateDate" 		 column="I_CREATE_DATE" />
 		<result property="iUpdateDate" 		 column="I_UPDATE_DATE" />
 		<result property="inquiryFilename" 	 column="INQUIRY_FILENAME" />
+		<result property="inquiryFileRename" column="INQUIRY_FILEReNAME" />
 		<result property="inquiryFilepath"	 column="INQUIRY_FILEPATH" />
 		<result property="inquiryFilelength" column="INQUIRY_FILELENGTH" />
 		<result property="inquiryYn" 		 column="INQUIRY_YN" />

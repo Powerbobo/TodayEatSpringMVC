@@ -39,7 +39,7 @@
 						<label>첨부파일</label>
 						<img alt="첨부파일" src="../resources/nuploadFiles/${ notice.noticeFilename }">
 						<!-- 하이퍼링크로 이미지 다운받게끔 할 수도 있음 -->
-						<a href="../resources/nuploadFiles/${ notice.noticeFileRename }" download>${ notice.noticeFilename }</a>
+						<a href="../resources/iuploadFiles/${ inquiry.inquiryFileRename }" download>${ inquiry.inquiryFilename }</a>
 					</li>
 					<li>
 						<label>답변</label>
