@@ -131,7 +131,7 @@ public class MemberController {
 	}
 	
 	// 마이페이지 이동
-	@RequestMapping(value="/member/myPage.do", method=RequestMethod.GET)
+	@RequestMapping(value="/member/myPage.do", method=RequestMethod.POST)
 	public String selectOneById(
 			@RequestParam("memberId") String memberId
 			, RedirectAttributes redirect

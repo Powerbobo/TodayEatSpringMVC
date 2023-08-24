@@ -34,16 +34,9 @@
 				<li>
 					<a class="manu" href="/inquiry/list.do">문의하기</a>
 				</li>
-				<!-- 마이페이지 -->
+				<!-- 공지사항 -->
 				<li>
-					<c:if test="${memberId eq null }">
-					
-					<!-- *** "로그인 후 이용해주세요."alert 창 띄우기 *** -->
-
-					</c:if>
-					<c:if test="${memberId ne null }">
-						<a class="manu" href="/member/myPage.do?memberId=${ memberId }">마이페이지</a>
-					</c:if>
+					<a class="manu" href="#">공지사항</a>
 				</li>
 			</ul>
 		</nav>
@@ -56,7 +49,15 @@
 			</c:if>
 		<c:if test="${ memberId ne null }">
 			<!-- <small>{sessionScope.userName }님 환영합니다!</small> -->
-			<a href="/member/myPage.do?memberId=${ memberId}">마이페이지</a>
+			
+			<form action="/member/myPage.do" method="post">
+				<input type="hidden" name="memberId" value="${ memberId }">
+				<input type="submit" id="myPageBtn" value="마이페이지">
+<%-- 				<a href="/member/myPage.do?memberId=${ memberId}">마이페이지</a> --%>
+			</form>
+			
+			
+			
 			<pre id="Space"> | </pre>
 			<a href="/member/logout.do?memberId=${ memberId }">로그아웃</a>
 		</c:if>

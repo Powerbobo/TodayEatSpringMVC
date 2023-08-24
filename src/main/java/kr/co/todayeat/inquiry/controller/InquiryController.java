@@ -129,6 +129,16 @@ public class InquiryController {
 		return "inquiry/detail";
 	}
 
+	// 문의 수정페이지로 이동하기
+	@RequestMapping(value="/inquiry/modify.do", method=RequestMethod.GET)
+	public String showModifyForm(
+			@RequestParam("inquiryNo") Integer inquiryNo
+			, Model model) {
+		Inquiry inquiry = service.selectInquiryByNo(inquiryNo);
+		model.addAttribute("inquiry", inquiry);
+		return "inquiry/modify";
+	}
+
 	/**
 	 * 문의 등록하기 Controller
 	 * @param inquiry
@@ -183,16 +193,6 @@ public class InquiryController {
 		
 	}
 	
-	// 문의 수정페이지로 이동하기
-	@RequestMapping(value="/inquiry/modify.do", method=RequestMethod.GET)
-	public String showModifyForm(
-			@RequestParam("inquiryNo") Integer inquiryNo
-			, Model model) {
-		Inquiry inquiry = service.selectInquiryByNo(inquiryNo);
-		model.addAttribute("inquiry", inquiry);
-		return "inquiry/modify";
-	}
-
 	/**
 	 * 페이지 네비게이션
 	 * @param currentPage
