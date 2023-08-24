@@ -62,6 +62,20 @@ public class InquiryStorelogic implements InquiryStore{
 		return inquiry;
 	}
 
+	// 문의사항 수정하기
+	@Override
+	public int updateInquiry(SqlSession session, Inquiry inquiry) {
+		int result = session.update("InquiryMapper.updateInquiry", inquiry);
+		return result;
+	}
+
+	// 문의사항 삭제하기
+	@Override
+	public int deleteInquiry(SqlSession session, Integer inquiryNo) {
+		int result = session.delete("InquiryMapper.deleteInquiry", inquiryNo);
+		return result;
+	}
+
 
 	
 }

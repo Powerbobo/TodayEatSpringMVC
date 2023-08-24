@@ -23,6 +23,20 @@
 		INSERT INTO INQUIRY_TBL VALUES(SEQ_INQUIRY_NO.NEXTVAL, #{ inquirySubject }, #{ inquiryContent }, #{ inquiryWriter }, DEFAULT, DEFAULT, #{ inquiryFilename }, #{ inquiryFileRename }, #{ inquiryFilepath }, #{ inquiryFilelength }, DEFAULT)
 	</insert>
 	
+	<!-- 문의 수정 -->
+	<update id="updateInquiry">
+		UPDATE INQUIRY_TBL SET INQUIRY_SUBJECT = #{ inquirySubject }
+			, INQUIRY_CONTENT = #{ inquiryContent }, I_UPDATE_DATE = DEFAULT
+			, INQUIRY_FILENAME = #{ inquiryFilename }, INQUIRY_FILEReNAME = #{ inquiryFileRename }
+			, INQUIRY_FILEPATH = #{ inquiryFilepath }, INQUIRY_FILELENGTH = #{ inquiryFilelength }
+			WHERE INQUIRY_NO = #{ inquiryNo }
+	</update>
+	
+	<!-- 문의 삭제 -->
+	<delete id="deleteInquiry">
+		DELETE FROM INQUIRY_TBL WHERE INQUIRY_NO = #{ inquiryNo }
+	</delete>
+	
 	<!-- 문의사항 전체 갯수 가져오기 -->
 	<select id="selectInquiryCount" resultType="_int">
 		SELECT COUNT(*) FROM INQUIRY_TBL

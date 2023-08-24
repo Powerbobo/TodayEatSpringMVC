@@ -58,5 +58,21 @@ public interface InquiryStore {
 	 */
 	Inquiry selectInquiryByNo(SqlSession session, Integer inquiryNo);
 
+	/**
+	 * 문의사항 수정하기 Store
+	 * @param session
+	 * @param inquiry
+	 * @return int
+	 */
+	int updateInquiry(SqlSession session, Inquiry inquiry);
+
+	/**
+	 * 문의사항 삭제하기 Store
+	 * @param session
+	 * @param inquirtNo
+	 * @return int
+	 */
+	int deleteInquiry(SqlSession session, Integer inquiryNo);
+
 
 }

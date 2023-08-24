@@ -27,6 +27,13 @@
 	                    <hr>
 	                    <div>
 	                        <table>
+	                        	<colgroup>
+	                        		<col width="10%"></col>
+	                        		<col width="40%"></col>
+	                        		<col width="20%"></col>
+	                        		<col width="15%"></col>
+	                        		<col width="15%"></col>
+	                        	</colgroup>
 	                        	<thead>
 	                         		<tr>
 	                         			<!-- *************** 테이블 제목 *************** -->
@@ -62,6 +69,12 @@
 	                        		<!-- *************** 테이블 네비게이션 *************** -->
 	                        		<tr align="center">
 	                        			<td colspan="5">
+											<c:if test="${ pInfo.startNavi != 1 }">
+												<c:url var="prevUrl" value="/inquiry/list.do">
+													<c:param name="page" value="${ pInfo.startNavi - 1 }"></c:param>
+												</c:url>
+												<a href="${ prevUrl }">[이전]</a>
+											</c:if>
 	                        				<c:forEach begin="${ pInfo.startNavi }" end="${ pInfo.endNavi }" var="p">
 	                        					<!-- var : 변수명, value : url -->
 	                        					<c:url var="pageUrl" value="/inquiry/list.do">
@@ -70,6 +83,12 @@
 	                        					</c:url>
 	                        					<a href="${ pageUrl }">${ p }</a>&nbsp;
 	                        				</c:forEach>
+	                        				<c:if test="${ pInfo.endNavi != pInfo.naviTotalCount }">
+												<c:url var="nextUrl" value="/inquiry/list.do">
+													<c:param name="page" value="${ pInfo.endNavi + 1 }"></c:param>
+												</c:url>
+												<a href="${ nextUrl }">[다음]</a>
+											</c:if>
 	                        			</td>
 	                        		</tr>
 	                        		<tr>

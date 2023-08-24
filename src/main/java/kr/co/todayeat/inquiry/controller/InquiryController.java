@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.todayeat.inquiry.domain.Inquiry;
 import kr.co.todayeat.inquiry.domain.PageInfo;
@@ -31,114 +32,6 @@ public class InquiryController {
 	private InquiryService service;
 
 	
-	/**
-	 * 문의 게시판 페이지이동 Controller
-	 * @param currentPage
-	 * @param model
-	 * @return String
-	 */
-	@RequestMapping(value="/inquiry/list.do", method=RequestMethod.GET)
-	public String showlistForm(
-			@RequestParam(value="page", required=false, defaultValue="1") Integer currentPage
-			, Model model) {
-		try {
-			// 문의사항 전체 갯수 조회 메소드
-			int totalCount = service.getListCount();
-			PageInfo pInfo = this.getPageInfo(currentPage, totalCount);
-			List<Inquiry> iList = service.selectInquiryList(pInfo);
-			if(iList.size() > 0) {
-				model.addAttribute("pInfo", pInfo);
-				model.addAttribute("iList", iList);
-				return "inquiry/list";
-			} else {
-				// 실패 -> 메인페이지로 이동
-				model.addAttribute("msg", "데이터 조회 실패!");
-				model.addAttribute("url", "/index.jsp");
-				return "common/serviceFailed";
-			}
-		} catch (Exception e) {
-			model.addAttribute("msg", "관리자에게 문의해주세요.");
-			model.addAttribute("url", "/inquiry/list.do");
-			model.addAttribute("error", e.getMessage());
-			return "common/serviceFailed";
-		}
-	}
-
-	// 네비게이션 검색하기
-	@RequestMapping(value="/inquiry/search.do", method=RequestMethod.GET)
-	public String searchInquiryList(
-			@RequestParam("searchCondition") String searchCondition
-			, @RequestParam("searchKeyword") String searchKeyword
-			, @RequestParam(value="page", required=false, defaultValue="1") Integer currentPage
-			, Model model) {
-		try {
-			List<Inquiry> searchList = new ArrayList<Inquiry>();
-			
-			// searchCondition, searchKeyword 2개의 값을 넘겨줘야함
-			// 방법 1 : VO클래스 만들기, 방법 2 : HashMap 이용하기 -> 2번 사용
-			Map<String, String> paramMap = new HashMap<String, String>();
-			
-			// paramMap 변수에 searchCondition, searchKeyword 값 넣기
-			paramMap.put("searchCondition", searchCondition);
-			paramMap.put("searchKeyword", searchKeyword);
-			
-			// 페이징처리
-			int totalCount = service.getListCount(paramMap);
-			PageInfo pInfo = this.getPageInfo(currentPage, totalCount);
-			
-			// 키워드 검색
-			searchList = service.searchInquiryKeyword(pInfo, paramMap);
-			if(!searchList.isEmpty()) {
-				// 조건으로 검색 후 2페이지 이후에도 해당 조건에 맞게 조회하기 위해서
-				// searchCondition, searchKeyword를 model.attribute 해 jsp에서 사용
-				model.addAttribute("searchCondition", searchCondition);
-				model.addAttribute("searchKeyword", searchKeyword);
-				model.addAttribute("pInfo", pInfo);
-				model.addAttribute("iList", searchList);
-				return "inquiry/search";
-			} else {
-				model.addAttribute("msg", "데이터 조회가 완료되지 않았습니다.");
-				model.addAttribute("error", "공지사항 제목으로 조회 실패");
-				model.addAttribute("url", "/list.jsp");
-				return "common/serviceFailed";
-			}
-		} catch (Exception e) {
-			model.addAttribute("msg", "관리자에게 문의해주세요.");
-			model.addAttribute("url", "/inquiry/list.do");
-			model.addAttribute("error", e.getMessage());
-			return "common/serviceFailed";
-		}
-	}
-
-	/**
-	 * 문의 등록 페이지이동 Controller
-	 * @return String
-	 */
-	@RequestMapping(value="/inquiry/insert.do", method=RequestMethod.GET)
-	public String showinsertForm() {
-		return "inquiry/insert";
-	}
-
-	// 문의사항 번호로 조회
-	@RequestMapping(value="/inquiry/detail.do", method=RequestMethod.GET)
-	public String showDetailForm(
-			@RequestParam("inquiryNo") Integer inquiryNo
-			, Model model) {
-		Inquiry inquiry = service.selectInquiryByNo(inquiryNo);
-		model.addAttribute("inquiry", inquiry);
-		return "inquiry/detail";
-	}
-
-	// 문의 수정페이지로 이동하기
-	@RequestMapping(value="/inquiry/modify.do", method=RequestMethod.GET)
-	public String showModifyForm(
-			@RequestParam("inquiryNo") Integer inquiryNo
-			, Model model) {
-		Inquiry inquiry = service.selectInquiryByNo(inquiryNo);
-		model.addAttribute("inquiry", inquiry);
-		return "inquiry/modify";
-	}
-
 	/**
 	 * 문의 등록하기 Controller
 	 * @param inquiry
@@ -192,7 +85,223 @@ public class InquiryController {
 		}
 		
 	}
+
+	/**
+	 * 문의 수정하기
+	 * @param inquiry
+	 * @param inquiryNo
+	 * @param uploadFile
+	 * @param request
+	 * @param mv
+	 * @return ModelAndView
+	 */
+	@RequestMapping(value="/inquiry/modify.do", method=RequestMethod.POST)
+	public ModelAndView UpdateInquiry(
+			@ModelAttribute Inquiry inquiry
+			, @RequestParam(value="uploadFile", required=false) MultipartFile uploadFile
+			, HttpServletRequest request
+			, ModelAndView mv) {
+		try {
+			// 업로드한 파일이 있거나, 업로드파일이 비어있지 않으면,
+			if(uploadFile != null && !uploadFile.isEmpty()) {
+				// 파일 이름 가져오기
+				String fileName = inquiry.getInquiryFilename();
+				if(fileName != null) {	// 파일이름이 있다면
+					// 기존 파일 삭제 (재사용성을 위해서 메소드로 만듬)
+					this.deleteFile(request, fileName);
+				}
+				// 파일 삭제했거나 없을 경우 파일 이름/경로/크기 가져오기(메소드)
+				Map<String, Object> infoMap = this.saveFile(uploadFile, request);
+				inquiry.setInquiryFilename((String)infoMap.get("fileName"));
+				inquiry.setInquiryFileRename((String)infoMap.get("fileRename"));
+				inquiry.setInquiryFilepath((String)infoMap.get("filePath"));
+				inquiry.setInquiryFilelength((long)infoMap.get("fileLength"));
+			}
+			int result = service.updateInquiry(inquiry);
+			if(result > 0) {
+				// 수정 성공 -> list 로 이동
+				mv.setViewName("/inquiry/list");
+			} else {
+				// 수정 실패 -> list 로 이동
+				mv.addObject("msg", "문의 수정 실패!");
+				mv.addObject("url", "inquiry/list.do");
+				mv.setViewName("common/serviceFailed");
+			}
+		} catch (Exception e) {
+			mv.addObject("msg", "관리자에게 문의해주세요.");
+			mv.addObject("error", e.getMessage());
+			mv.addObject("url", "/inquiry/list.do");
+			mv.setViewName("common/serviceFailed");
+					}
+		return mv;
+	}
 	
+	// 문의 삭제하기
+	@RequestMapping(value="/inquiry/delete.do", method=RequestMethod.GET)
+	public ModelAndView removeInquiry(
+			@RequestParam("inquiryNo") Integer inquiryNo
+			, ModelAndView mv) {
+		try {
+			int result = service.deleteInquiry(inquiryNo);
+			if(result > 0) {
+				// 삭제 성공 -> list로 이동
+				mv.setViewName("/inquiry/list");
+			} else {
+				// 삭제 실패 -> list로 이동
+				mv.addObject("msg", "문의 삭제 실패!");
+				mv.addObject("url", "inquiry/list.do");
+				mv.setViewName("common/serviceFailed");
+			}
+		} catch (Exception e) {
+			mv.addObject("msg", "관리자에게 문의해주세요.");
+			mv.addObject("error", e.getMessage());
+			mv.addObject("url", "/inquiry/list.do");
+			mv.setViewName("common/serviceFailed");
+		}
+		return mv;
+	}
+
+	/**
+	 * 문의 게시판 페이지이동 Controller
+	 * @param currentPage
+	 * @param model
+	 * @return String
+	 */
+	@RequestMapping(value="/inquiry/list.do", method=RequestMethod.GET)
+	public String showlistForm(
+			@RequestParam(value="page", required=false, defaultValue="1") Integer currentPage
+			, Model model) {
+		try {
+			// 문의사항 전체 갯수 조회 메소드
+			int totalCount = service.getListCount();
+			PageInfo pInfo = this.getPageInfo(currentPage, totalCount);
+			List<Inquiry> iList = service.selectInquiryList(pInfo);
+			if(iList.size() > 0) {
+				model.addAttribute("pInfo", pInfo);
+				model.addAttribute("iList", iList);
+				return "inquiry/list";
+			} else {
+				// 실패 -> 메인페이지로 이동
+				model.addAttribute("msg", "데이터 조회 실패!");
+				model.addAttribute("url", "/index.jsp");
+				return "common/serviceFailed";
+			}
+		} catch (Exception e) {
+			model.addAttribute("msg", "관리자에게 문의해주세요.");
+			model.addAttribute("url", "/inquiry/list.do");
+			model.addAttribute("error", e.getMessage());
+			return "common/serviceFailed";
+		}
+	}
+
+	/**
+	 * 문의 등록 페이지이동 Controller
+	 * @return String
+	 */
+	@RequestMapping(value="/inquiry/insert.do", method=RequestMethod.GET)
+	public String showinsertForm() {
+		return "inquiry/insert";
+	}
+
+	/**
+	 * 번호로 문의 조회
+	 * @param inquiryNo
+	 * @param model
+	 * @return String
+	 */
+	@RequestMapping(value="/inquiry/detail.do", method=RequestMethod.GET)
+	public String showDetailForm(
+			@RequestParam("inquiryNo") Integer inquiryNo
+			, Model model) {
+		Inquiry inquiry = service.selectInquiryByNo(inquiryNo);
+		model.addAttribute("inquiry", inquiry);
+		return "inquiry/detail";
+	}
+
+	/**
+	 * 문의 수정페이지로 이동
+	 * @param inquiryNo
+	 * @param mv
+	 * @return ModelAndView
+	 */
+	@RequestMapping(value="/inquiry/modify.do", method=RequestMethod.GET)
+	public ModelAndView showModifyForm(
+			@RequestParam("inquiryNo") Integer inquiryNo
+			, ModelAndView mv) {
+		try {
+			Inquiry inquiryOne = service.selectInquiryByNo(inquiryNo);
+			if(inquiryOne != null) {
+				// 성공 시 수정페이지로 이동
+				mv.addObject("inquiry", inquiryOne);
+				mv.addObject("/inquiry/modify");
+			} else {
+				mv.addObject("msg", "데이터 조회 실패!");
+				mv.addObject("url", "inquiry/list.do");
+				mv.setViewName("common/serviceFailed");
+			} 
+		return mv;
+		}catch (Exception e) {
+			mv.addObject("msg", "관리자에게 문의해주세요.");
+			mv.addObject("error", e.getMessage());
+			mv.addObject("url", "/inquiry/list.do");
+			mv.setViewName("common/serviceFailed");
+		}
+		return mv;
+	}
+	
+	/**
+	 * 키워드 검색 리스트
+	 * @param searchCondition
+	 * @param searchKeyword
+	 * @param currentPage
+	 * @param model
+	 * @return String
+	 */
+	@RequestMapping(value="/inquiry/search.do", method=RequestMethod.GET)
+	public String searchInquiryList(
+			@RequestParam("searchCondition") String searchCondition
+			, @RequestParam("searchKeyword") String searchKeyword
+			, @RequestParam(value="page", required=false, defaultValue="1") Integer currentPage
+			, Model model) {
+		try {
+			List<Inquiry> searchList = new ArrayList<Inquiry>();
+			
+			// searchCondition, searchKeyword 2개의 값을 넘겨줘야함
+			// 방법 1 : VO클래스 만들기, 방법 2 : HashMap 이용하기 -> 2번 사용
+			Map<String, String> paramMap = new HashMap<String, String>();
+			
+			// paramMap 변수에 searchCondition, searchKeyword 값 넣기
+			paramMap.put("searchCondition", searchCondition);
+			paramMap.put("searchKeyword", searchKeyword);
+			
+			// 페이징처리
+			int totalCount = service.getListCount(paramMap);
+			PageInfo pInfo = this.getPageInfo(currentPage, totalCount);
+			
+			// 키워드 검색
+			searchList = service.searchInquiryKeyword(pInfo, paramMap);
+			if(!searchList.isEmpty()) {
+				// 조건으로 검색 후 2페이지 이후에도 해당 조건에 맞게 조회하기 위해서
+				// searchCondition, searchKeyword를 model.attribute 해 jsp에서 사용
+				model.addAttribute("searchCondition", searchCondition);
+				model.addAttribute("searchKeyword", searchKeyword);
+				model.addAttribute("pInfo", pInfo);
+				model.addAttribute("iList", searchList);
+				return "inquiry/search";
+			} else {
+				model.addAttribute("msg", "데이터 조회가 완료되지 않았습니다.");
+				model.addAttribute("error", "공지사항 제목으로 조회 실패");
+				model.addAttribute("url", "/list.jsp");
+				return "common/serviceFailed";
+			}
+		} catch (Exception e) {
+			model.addAttribute("msg", "관리자에게 문의해주세요.");
+			model.addAttribute("url", "/inquiry/list.do");
+			model.addAttribute("error", e.getMessage());
+			return "common/serviceFailed";
+		}
+	}
+
 	/**
 	 * 페이지 네비게이션
 	 * @param currentPage
@@ -267,7 +376,17 @@ public class InquiryController {
 		return infoMap;
 	}
 	
-	
+	// 파일 삭제 메소드
+	private void deleteFile(HttpServletRequest request, String fileName) {
+		// 파일 경로 구하기
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		// 파일 삭제
+		String delFilePath = root + "\\iuploadFiles\\" + fileName;
+		File file = new File(delFilePath);
+		if(file.exists()) {
+			file.delete();	// 파일이 있다면 파일 삭제
+		}
+	}
 	
 	
 }

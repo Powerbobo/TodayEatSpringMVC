@@ -49,5 +49,19 @@ public interface InquiryService {
 	 * @return Inquiry
 	 */
 	Inquiry selectInquiryByNo(Integer inquiryNo);
+
+	/**
+	 * 문의사항 수정하기 Service
+	 * @param inquiry
+	 * @return int
+	 */
+	int updateInquiry(Inquiry inquiry);
+
+	/**
+	 * 문의사항 삭제하기 Service
+	 * @param inquirtNo
+	 * @return int
+	 */
+	int deleteInquiry(Integer inquiryNo);
 	
 }

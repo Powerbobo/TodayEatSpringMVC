@@ -37,7 +37,7 @@
 					</li>
 					<li>
 						<label>첨부파일</label>
-						<img alt="첨부파일" src="../resources/nuploadFiles/${ notice.noticeFilename }">
+						<img alt="첨부파일" src="../resources/nuploadFiles/${ inquiry.inquiryFilename }">
 						<!-- 하이퍼링크로 이미지 다운받게끔 할 수도 있음 -->
 						<a href="../resources/iuploadFiles/${ inquiry.inquiryFileRename }" download>${ inquiry.inquiryFilename }</a>
 					</li>
@@ -58,8 +58,8 @@
 		</div>
 		<script>
 			function showModifyPage() {
-				const noticeNo = "${ inquiry.inquiryNo }";
-				location.href="/inquiry/modify.do?inquiryNo=" + noticeNo;
+				const inquiryNo = "${ inquiry.inquiryNo }";
+				location.href="/inquiry/modify.do?inquiryNo=" + inquiryNo;
 			}
 			
 			function showListPage() {
@@ -67,9 +67,9 @@
 			}
 			
 			const deleteCheck = () => {
-				const notcieNo = "${notice.noticeNo}";
+				const notcieNo = "${ inquiry.inquiryNo }";
 				if(confirm("정말 삭제하시겠습니까?")){
-					location.href="/inquiry/delete.do?noticeNo="+noticeNo;
+					location.href="/inquiry/delete.do?inquiryNo="+inquiryNo;
 				}
 			} 
 		</script>

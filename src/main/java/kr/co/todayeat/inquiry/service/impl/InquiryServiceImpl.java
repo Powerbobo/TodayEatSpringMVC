@@ -63,4 +63,18 @@ public class InquiryServiceImpl implements InquiryService{
 		return inqiury;
 	}
 
+	// 문의사항 수정하기
+	@Override
+	public int updateInquiry(Inquiry inquiry) {
+		int result = iStore.updateInquiry(session, inquiry);
+		return result;
+	}
+
+	// 문의사항 삭제하기
+	@Override
+	public int deleteInquiry(Integer inquiryNo) {
+		int result = iStore.deleteInquiry(session, inquiryNo);
+		return result;
+	}
+
 }
