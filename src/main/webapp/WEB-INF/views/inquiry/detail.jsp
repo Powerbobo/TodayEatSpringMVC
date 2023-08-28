@@ -41,17 +41,22 @@
 						<!-- 하이퍼링크로 이미지 다운받게끔 할 수도 있음 -->
 						<a href="../resources/iuploadFiles/${ inquiry.inquiryFileRename }" download>${ inquiry.inquiryFilename }</a>
 					</li>
-					<li>
-						<label>답변</label>
-						<p></p>
-					</li>
 				</ul>
-<!-- 				<a href="/inquiry/list.do">목록으로 이동</a> -->
-<!-- 				<a href="#">수정하기</a> -->
-<!-- 				<a href="" onclick="deleteCheck();">삭제하기</a> -->
-				<button type="button" onclick="showModifyPage();">수정하기</button>
-				<button type="button" onclick="deleteCheck();">삭제하기</button>
-				<button type="button" onclick="showListPage();">목록</button>
+				<div>
+	<!-- 				<a href="/inquiry/list.do">목록으로 이동</a> -->
+	<!-- 				<a href="#">수정하기</a> -->
+	<!-- 				<a href="" onclick="deleteCheck();">삭제하기</a> -->
+					<button type="button" onclick="showModifyPage();">수정하기</button>
+	<!-- 				<input type="button" value="삭제하기"> -->
+					<button type="button" onclick="deleteCheck();">삭제하기</button>
+					<button type="button" onclick="showListPage();">목록</button>
+				</div>
+				<!-- 댓글 등록 -->
+				<br>
+				<form action="/reply/add.kh" method="post">
+					<!-- 사용자가 알 필요는 없지만 데이터 불러오기 위해서 작성 -->
+					
+				</form>
 			</main>
 			<!-- footer -->
 <%-- 			<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include> --%>
@@ -63,11 +68,11 @@
 			}
 			
 			function showListPage() {
-				location.href="/inquiry/list.do."
+				location.href="/inquiry/list.do"
 			}
 			
 			const deleteCheck = () => {
-				const notcieNo = "${ inquiry.inquiryNo }";
+				const inquiryNo = "${ inquiry.inquiryNo }";
 				if(confirm("정말 삭제하시겠습니까?")){
 					location.href="/inquiry/delete.do?inquiryNo="+inquiryNo;
 				}

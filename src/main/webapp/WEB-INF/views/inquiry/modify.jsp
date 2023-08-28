@@ -11,12 +11,12 @@
 			<main>
 				<h1>문의 수정</h1>
 				<form action="/inquiry/modify.do" method="post" enctype="multipart/form-data">
-					<input type="hidden" name="inquiryWriter" value="${ inquiryWriter }">
 					<input type="hidden" name="inquiryNo" value="${ inquiry.inquiryNo }">
+					<input type="hidden" name="inquiryWriter" value="${ inquiry.inquiryWriter }">
 					<input type="hidden" name="inquiryFilename" value="${ inquiry.inquiryFilename }">
 					<input type="hidden" name="inquiryFileRename" value="${ inquiry.inquiryFileRename }">
-					<input type="hidden" name="inquiryFilepath" value="${ inquriy.inquiryFilepath }">
-					<input type="hidden" name="inquiryFilelength" value="${ inquriy.inquiryFilelength }">
+					<input type="hidden" name="inquiryFilepath" value="${ inquiry.inquiryFilepath }">
+					<input type="hidden" name="inquiryFilelength" value="${ inquiry.inquiryFilelength }">
 					<ul>
 						<li>
 							<label>제목</label>

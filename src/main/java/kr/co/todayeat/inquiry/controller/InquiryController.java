@@ -120,7 +120,7 @@ public class InquiryController {
 			int result = service.updateInquiry(inquiry);
 			if(result > 0) {
 				// 수정 성공 -> list 로 이동
-				mv.setViewName("/inquiry/list");
+				mv.setViewName("redirect:/inquiry/detail.do?inquiryNo="+inquiry.getInquiryNo());
 			} else {
 				// 수정 실패 -> list 로 이동
 				mv.addObject("msg", "문의 수정 실패!");
@@ -132,11 +132,16 @@ public class InquiryController {
 			mv.addObject("error", e.getMessage());
 			mv.addObject("url", "/inquiry/list.do");
 			mv.setViewName("common/serviceFailed");
-					}
+			}
 		return mv;
 	}
 	
-	// 문의 삭제하기
+	/**
+	 * 문의 삭제하기
+	 * @param inquiryNo
+	 * @param mv
+	 * @return ModelAndView
+	 */
 	@RequestMapping(value="/inquiry/delete.do", method=RequestMethod.GET)
 	public ModelAndView removeInquiry(
 			@RequestParam("inquiryNo") Integer inquiryNo
@@ -145,7 +150,7 @@ public class InquiryController {
 			int result = service.deleteInquiry(inquiryNo);
 			if(result > 0) {
 				// 삭제 성공 -> list로 이동
-				mv.setViewName("/inquiry/list");
+				mv.setViewName("redirect:/inquiry/list.do");
 			} else {
 				// 삭제 실패 -> list로 이동
 				mv.addObject("msg", "문의 삭제 실패!");
