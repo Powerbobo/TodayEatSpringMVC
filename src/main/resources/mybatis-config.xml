@@ -9,10 +9,12 @@
 	<typeAliases>
 		<typeAlias type="kr.co.todayeat.member.domain.Member" alias="Member" />
 		<typeAlias type="kr.co.todayeat.inquiry.domain.Inquiry" alias="Inquiry" />
+		<typeAlias type="kr.co.todayeat.inquiry.domain.Answer" alias="Answer" />
 	</typeAliases>
 	<!--매퍼 만들고 등록 -->
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml" />
 		<mapper resource="mappers/inquiry-mapper.xml" />
+		<mapper resource="mappers/answer-mapper.xml" />
 	</mappers>
 </configuration>

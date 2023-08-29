@@ -5,8 +5,8 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>오늘 뭐 먹지?</title>
+		<link rel="stylesheet" href="/resources/css/inquiry_detail.css">
 		<link rel="stylesheet" href="/resources/css/index.css">
 		<link rel="stylesheet" href="/resources/css/reset.css">
-		<link rel="stylesheet" href="/resources/css/inquiry.css">
 		<title>오늘 뭐 먹지?</title>
 	</head>

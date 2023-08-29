@@ -1,7 +1,6 @@
 package kr.co.todayeat.inquiry.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

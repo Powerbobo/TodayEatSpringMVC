@@ -1,0 +1,27 @@
+main {
+    --height: 1000px;
+}
+h1 {
+	--text-align : center;
+	--margin-top : 100px;
+}
+ul {
+	--list-style-type: none;
+    --padding: 0;
+}
+#showInquiry {
+	--border : 1px solid black;
+	--height : 800px;
+	--width : 1000px;
+	--padding-top : 50px;
+	--margin : 0 auto;
+	--text-align : center;
+}
+.detail-list {
+	--font-weight: bold;
+	--text-align : left;
+}
+
+#HiddenAnswer {
+	display : none;
+}
