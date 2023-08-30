@@ -9,11 +9,18 @@ import kr.co.todayeat.inquiry.store.AnswerStore;
 @Repository
 public class AnswerStroeLogic implements AnswerStore{
 
-	// 게시판 답변 등록
+	// 문의글 답변 등록
 	@Override
 	public int insertAnswer(SqlSession session, Answer answer) {
 		int result = session.insert("AnswerMapper.insertAnswer", answer);
 		return result;
+	}
+
+	// 문의글 답변 조회
+	@Override
+	public Answer selectAnswerByNo(SqlSession session, Integer inquiryNo) {
+		Answer answer = session.selectOne("AnswerMapper.selectAnswerByNo", inquiryNo);
+		return answer;
 	}
 
 }

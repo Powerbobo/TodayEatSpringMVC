@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="AnswerMapper">
+
+	<resultMap type="Answer" id="answerResultMap">
+		<id property="answerNo" column="ANSWER_NO" />
+		<result property="ansInquiryNo"	 column="ANS_INQUIRY_NO" />
+		<result property="answerContent" column="ANSWER_CONTENT" />
+		<result property="answerWriter"	 column="ANSWER_WRITER" />
+		<result property="aCreateDate" 	 column="A_CREATE_DATE" />
+		<result property="aUpdateDate"	 column="A_UPDATE_DATE" />
+		<result property="updateYN"		 column="UPDATE_YN" />
+		<result property="aStatus" 		 column="A_STATUS" />
+	</resultMap>
+
+	<!-- 문의글 답변 등록 -->
 	<insert id="insertAnswer">
 		INSERT INTO ANSWER_TBL VALUES(
 			SEQ_ANSWER_NO.NEXTVAL, #{ ansInquiryNo }, #{ answerContent }, #{ answerWriter }
 			, DEFAULT, DEFAULT, DEFAULT, DEFAULT)
 	</insert>
+	
+	<!-- 문의글 답변 조회 -->
+	<select id="selectAnswerByNo" resultMap="answerResultMap">
+		SELECT * FROM ANSWER_TBL WHERE ANS_INQUIRY_NO = #{ ansInquiryNo } AND A_STATUS = 'Y'
+	</select>
 </mapper>

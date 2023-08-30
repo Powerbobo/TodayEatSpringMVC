@@ -14,4 +14,12 @@ public interface AnswerStore {
 	 */
 	int insertAnswer(SqlSession session, Answer answer);
 
+	/**
+	 * 문의글 답변 조회 Store
+	 * @param session
+	 * @param inquiryNo
+	 * @return
+	 */
+	Answer selectAnswerByNo(SqlSession session, Integer inquiryNo);
+
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.todayeat.inquiry.domain.Answer;
 import kr.co.todayeat.inquiry.domain.Inquiry;
 import kr.co.todayeat.inquiry.domain.PageInfo;
+import kr.co.todayeat.inquiry.service.AnswerService;
 import kr.co.todayeat.inquiry.service.InquiryService;
 
 @Controller
@@ -29,7 +32,8 @@ public class InquiryController {
 
 	@Autowired
 	private InquiryService service;
-
+	@Autowired
+	private AnswerService aService;
 	
 	/**
 	 * 문의 등록하기 Controller
@@ -44,24 +48,28 @@ public class InquiryController {
 			@ModelAttribute Inquiry inquiry
 			, @RequestParam(value="uploadFile", required=false) MultipartFile uploadFile
 			, HttpServletRequest request
+			, HttpSession session
 			, Model model) {
 		try {
-			// ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 파일 첨부 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-			// 파일이 있는지 여부 유효선 검사 후 파일 첨부 진행
-			if(uploadFile != null && !uploadFile.getOriginalFilename().equals("")) {
-				Map<String, Object> iMap = this.saveFile(uploadFile, request);
-				String fileName = (String)iMap.get("fileName");
-				String fileRename = (String)iMap.get("fileRename");
-				String filePath = (String)iMap.get("filePath");
-				long fileLength = (long)iMap.get("fileLength");
-				
-				// DB에 저장하기 위해 inquiry에 데이터를 Set 하는 부분
-				inquiry.setInquiryFilename(fileName);
-				inquiry.setInquiryFileRename(fileRename);
-				inquiry.setInquiryFilepath(filePath);
-				inquiry.setInquiryFilelength(fileLength);
+			// 작성자를 아이디로 넣기
+			String inquiryWriter = (String)session.getAttribute("memberId");
+			if(inquiryWriter != null && !inquiryWriter.equals("")) {
+				// ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 파일 첨부 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+				// 파일이 있는지 여부 유효선 검사 후 파일 첨부 진행
+				if(uploadFile != null && !uploadFile.getOriginalFilename().equals("")) {
+					Map<String, Object> iMap = this.saveFile(uploadFile, request);
+					String fileName = (String)iMap.get("fileName");
+					String fileRename = (String)iMap.get("fileRename");
+					String filePath = (String)iMap.get("filePath");
+					long fileLength = (long)iMap.get("fileLength");
+					
+					// DB에 저장하기 위해 inquiry에 데이터를 Set 하는 부분
+					inquiry.setInquiryFilename(fileName);
+					inquiry.setInquiryFileRename(fileRename);
+					inquiry.setInquiryFilepath(filePath);
+					inquiry.setInquiryFilelength(fileLength);
+				}
 			}
-			
 			// ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 문의 등록■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 			int result = service.insertInquiry(inquiry);
 			if(result > 0) {	// 유효성 검사
@@ -99,22 +107,27 @@ public class InquiryController {
 			@ModelAttribute Inquiry inquiry
 			, @RequestParam(value="uploadFile", required=false) MultipartFile uploadFile
 			, HttpServletRequest request
+			, HttpSession session
 			, ModelAndView mv) {
 		try {
-			// 업로드한 파일이 있거나, 업로드파일이 비어있지 않으면,
-			if(uploadFile != null && !uploadFile.isEmpty()) {
-				// 파일 이름 가져오기
-				String fileName = inquiry.getInquiryFilename();
-				if(fileName != null) {	// 파일이름이 있다면
-					// 기존 파일 삭제 (재사용성을 위해서 메소드로 만듬)
-					this.deleteFile(request, fileName);
+			// 작성자만 수정 가능
+			String inquiryWriter = (String)session.getAttribute("memberId");
+			if(inquiryWriter != null && inquiry.getInquiryWriter().equals(inquiryWriter)) {
+				// 업로드한 파일이 있거나, 업로드파일이 비어있지 않으면,
+				if(uploadFile != null && !uploadFile.isEmpty()) {
+					// 파일 이름 가져오기
+					String fileName = inquiry.getInquiryFilename();
+					if(fileName != null) {	// 파일이름이 있다면
+						// 기존 파일 삭제 (재사용성을 위해서 메소드로 만듬)
+						this.deleteFile(request, fileName);
+					}
+					// 파일 삭제했거나 없을 경우 파일 이름/경로/크기 가져오기(메소드)
+					Map<String, Object> infoMap = this.saveFile(uploadFile, request);
+					inquiry.setInquiryFilename((String)infoMap.get("fileName"));
+					inquiry.setInquiryFileRename((String)infoMap.get("fileRename"));
+					inquiry.setInquiryFilepath((String)infoMap.get("filePath"));
+					inquiry.setInquiryFilelength((long)infoMap.get("fileLength"));
 				}
-				// 파일 삭제했거나 없을 경우 파일 이름/경로/크기 가져오기(메소드)
-				Map<String, Object> infoMap = this.saveFile(uploadFile, request);
-				inquiry.setInquiryFilename((String)infoMap.get("fileName"));
-				inquiry.setInquiryFileRename((String)infoMap.get("fileRename"));
-				inquiry.setInquiryFilepath((String)infoMap.get("filePath"));
-				inquiry.setInquiryFilelength((long)infoMap.get("fileLength"));
 			}
 			int result = service.updateInquiry(inquiry);
 			if(result > 0) {
@@ -216,10 +229,41 @@ public class InquiryController {
 	@RequestMapping(value="/inquiry/detail.do", method=RequestMethod.GET)
 	public String showDetailForm(
 			@RequestParam("inquiryNo") Integer inquiryNo
+			, HttpSession session
 			, Model model) {
-		Inquiry inquiry = service.selectInquiryByNo(inquiryNo);
-		model.addAttribute("inquiry", inquiry);
-		return "inquiry/detail";
+		try {
+			String memberId = (String)session.getAttribute("memberId");
+			Inquiry inquiry = service.selectInquiryByNo(inquiryNo);
+			// inquiry 가 null 이 아닐 경우에
+			if(inquiry != null) {
+				String inquiryWriter = inquiry.getInquiryWriter();
+				// 작성자가 아이디이거나, 어드민일 경우에만 
+				if("admin".equals(memberId) || inquiryWriter.equals(memberId)) {
+					// 답변 조회
+					Answer answer = aService.selectAnswerByNo(inquiryNo);
+					if(answer != null ) {
+						// 답변 조회 성공
+						model.addAttribute("answer", answer);
+					}
+				} else {
+					model.addAttribute("msg", "작성자만 조회 가능합니다.");
+					model.addAttribute("url", "/inquiry/list.do");
+					return "common/serviceFailed";
+				}
+				model.addAttribute("inquiry", inquiry);
+				return "inquiry/detail";
+			} else {
+				// 실패
+				model.addAttribute("msg", "데이터 조회 실패!");
+				model.addAttribute("url", "/inquiry/list.do");
+				return "common/serviceFailed";
+			}
+		} catch (Exception e) {
+			model.addAttribute("msg", "관리자에게 문의해주세요.");
+			model.addAttribute("error", e.getMessage());
+			model.addAttribute("url", "/inquiry/list.do");
+			return "common/serviceFailed";
+		}
 	}
 
 	/**

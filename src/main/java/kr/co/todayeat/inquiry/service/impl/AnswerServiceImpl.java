@@ -16,10 +16,17 @@ public class AnswerServiceImpl implements AnswerService{
 	@Autowired
 	private SqlSession session;
 
-	// 게시글 답변 등록
+	// 문의글 답변 등록
 	@Override
 	public int insertAnswer(Answer answer) {
 		int result = aStore.insertAnswer(session, answer);
 		return result;
+	}
+
+	// 문의글 답변 조회
+	@Override
+	public Answer selectAnswerByNo(Integer inquiryNo) {
+		Answer answer = aStore.selectAnswerByNo(session, inquiryNo);
+		return answer;
 	}
 }

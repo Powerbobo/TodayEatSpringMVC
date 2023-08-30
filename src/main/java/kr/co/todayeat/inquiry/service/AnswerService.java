@@ -11,4 +11,11 @@ public interface AnswerService {
 	 */
 	int insertAnswer(Answer answer);
 
+	/**
+	 * 문의글 답변 조회 Service
+	 * @param inquiryNo
+	 * @return Answer
+	 */
+	Answer selectAnswerByNo(Integer inquiryNo);
+
 }
