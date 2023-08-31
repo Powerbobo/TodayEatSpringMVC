@@ -20,6 +20,12 @@
 			, DEFAULT, DEFAULT, DEFAULT, DEFAULT)
 	</insert>
 	
+	<!-- 문의 답변 수정 -->
+	<update id="updateAnswer">
+		UPDATE ANSWER_TBL SET ANSWER_CONTENT = #{ answerContent }, A_UPDATE_DATE = DEFAULT
+			, UPDATE_YN = 'Y' WHERE ANSWER_NO = #{ answerNo } AND A_STATUS = 'Y'
+	</update>
+	
 	<!-- 문의글 답변 조회 -->
 	<select id="selectAnswerByNo" resultMap="answerResultMap">
 		SELECT * FROM ANSWER_TBL WHERE ANS_INQUIRY_NO = #{ ansInquiryNo } AND A_STATUS = 'Y'

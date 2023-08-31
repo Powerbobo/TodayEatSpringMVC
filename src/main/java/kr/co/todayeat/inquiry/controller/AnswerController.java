@@ -62,4 +62,50 @@ public class AnswerController {
 		}
 		return mv;
 	}
+	
+	/**
+	 * 문의글 답변 수정
+	 * @param answer
+	 * @param session
+	 * @param mv
+	 * @return ModelAndView
+	 */
+	@RequestMapping(value="/update.do", method=RequestMethod.POST)
+	public ModelAndView modifyAnswer(
+			@ModelAttribute Answer answer
+			, HttpSession session
+			, ModelAndView mv) {
+		String url = "";
+		try {
+			String answerWriter = (String)session.getAttribute("memberId");
+			if(answerWriter != null && "admin".equals(answerWriter)) {
+				answer.setAnswerWriter(answerWriter);
+				int result = aService.updateAnswer(answer);
+				url = "/inquiry/detail.do?inquiryNo="+answer.getAnsInquiryNo();
+				if(result > 0) {
+					mv.setViewName("redirect:"+url);
+				} else {
+					mv.addObject("msg", "답변 수정 실패!");
+					mv.addObject("url", url);
+					mv.setViewName("common/serviceFailed");
+				}
+			}
+		} catch (Exception e) {
+			mv.addObject("msg", "관리자에게 문의바랍니다.");
+			mv.addObject("error", e.getMessage());
+			mv.addObject("url", url);
+			mv.setViewName("common/serviceFailed");
+		}
+		return mv;
+	}
+	
+	//문의 삭제하기
+	
+//	public
+	
+	
+	
+	
+	
+	
 }

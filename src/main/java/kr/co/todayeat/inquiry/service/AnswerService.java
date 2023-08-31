@@ -18,4 +18,11 @@ public interface AnswerService {
 	 */
 	Answer selectAnswerByNo(Integer inquiryNo);
 
+	/**
+	 * 문의글 답변 수정 Service
+	 * @param answer
+	 * @return int
+	 */
+	int updateAnswer(Answer answer);
+
 }

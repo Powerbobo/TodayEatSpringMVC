@@ -29,4 +29,11 @@ public class AnswerServiceImpl implements AnswerService{
 		Answer answer = aStore.selectAnswerByNo(session, inquiryNo);
 		return answer;
 	}
+
+	// 문의글 답변 수정
+	@Override
+	public int updateAnswer(Answer answer) {
+		int result = aStore.updateAnswer(session, answer);
+		return result;
+	}
 }

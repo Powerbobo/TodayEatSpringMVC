@@ -45,23 +45,23 @@
 								</div>
 							</li>
 							<li>
-								<label>첨부파일</label>
 								<img alt="첨부파일" src="../resources/iuploadFiles/${ inquiry.inquiryFilename }">
 								<!-- 하이퍼링크로 이미지 다운받게끔 할 수도 있음 -->
 								<a href="../resources/iuploadFiles/${ inquiry.inquiryFileRename }" download>${ inquiry.inquiryFilename }</a>
 							</li>
 						</ul>
 						<div>
-							<!-- <a href="/inquiry/list.do">목록으로 이동</a> -->
-							<!-- <a href="#">수정하기</a> -->
-							<!-- <a href="" onclick="deleteCheck();">삭제하기</a> -->
 							<button type="button" onclick="showModifyPage();">수정하기</button>
 							<!-- <input type="button" value="삭제하기"> -->
 							<button type="button" onclick="deleteCheck();">삭제하기</button>
 							<button type="button" onclick="showListPage();">목록</button>
 							<c:if test="${ memberId eq 'admin' }">
-								<button type="button" onclick="showAnswerForm();">답변</button>
+								<c:if test="${ answer eq null }">
+									<button type="button" onclick="showAnswerForm();">답변</button>
+								</c:if>
 							</c:if>
+						</div>
+						<div>
 						</div>
 						<!-- 댓글 등록 -->
 						<br>
@@ -85,15 +85,32 @@
 						<br>
 						<c:if test="${answer ne null }">
 							<table width="500" border="1">
+								<colgroup>
+									<col width=15%>
+									<col width="65%">
+									<col width="20%">
+								</colgroup>
 								<tr>
 									<td>${ answer.answerWriter }</td>
 									<td>${ answer.answerContent }</td>
 									<td>${ answer.aCreateDate }</td>
 								</tr>
+								<tr id="answerModifyForm" style="display:none;">
+									<!-- ===== html 방식 ===== -->
+<!-- 									<form actrion="/answer/update.do" method="post"> -->
+<%-- 										<input type="hidden" name="answerNo" value="${ answer.answerNo }"> --%>
+<%-- 										<input type="hidden" name="ansInquiryNo" value="${ answer.ansInquiryNo }"> --%>
+<%-- 										<td colspan="2"><input type="text" size="50" name="answerContent" value="${ answer.answerContent }"></td> --%>
+<!-- 										<td><input type="button" value="완료"></td> -->
+									<!-- ===== DOM 방식 ===== -->
+									<td colspan="2"><input id="answerContent" type="text" size="50" name="answerContent" value="${ answer.answerContent }"></td>
+									<td><input type="button" onclick="modifyAnswer(this, '${ answer.answerNo }', '${ answer.ansInquiryNo }');" value="완료"></td>
+<!-- 									</form> -->
+								</tr>
 							</table>
 							<c:if test="${ memberId eq 'admin' }">
 								<br>
-								<button type="button" onclick="modifyAnswer();">수정하기</button>
+								<button type="button" onclick="showModifyAnswer(this);">수정하기</button>
 								<button type="button" onclick="deleteAnswer();">삭제하기</button>
 							</c:if>
 						</c:if>
@@ -104,21 +121,54 @@
 		</div>
 		<script>
 			//  ============================ 댓글 ============================
-			// 답변 창 띄우기?
+			// 답글 창 보이기
 			function showAnswerForm() {
 				const hiddenAnswerForm = document.getElementById("HiddenAnswer");
 				if (hiddenAnswerForm) {
 					hiddenAnswerForm.style.display = "block"; // 또는 원하는 디스플레이 값
 				}
 			}
-			// 수정하기
-			// 			function modifyAnswer() {
-
-			// 			}
-			// 삭제하기
-			// 			function deleteAnswer() {
-
-			// 			}
+			
+			// 답글 수정 창 보이기
+			function showModifyAnswer() {
+				document.querySelector("#answerModifyForm").style.display = "";
+			}
+			
+			// 답글 수정하기
+			function modifyAnswer(obj, answerNo, ansInquiryNo) {
+				
+				// obj.parentElement.parentElement.nextElementSibling.style.display = "";
+				
+				const form = document.createElement("form");
+				form.action = "/answer/update.do";
+				form.method = "post"
+				
+				const input1 = document.createElement("input");
+				input1.type = "hidden";
+				input1.value = answerNo;
+				input1.name = "answerNo";
+				
+				const input2 = document.createElement("input");
+				input2.type = "hidden";
+				input2.value = ansInquiryNo;
+				input2.name = "ansInquiryNo";
+				
+				const input3 = document.createElement("input");
+				input3.type = "text";
+				input3.value = obj.parentElement.previousElementSibling.childNodes[0].value;
+				input3.name = "answerContent";
+				
+				form.appendChild(input1);
+				form.appendChild(input2);
+				form.appendChild(input3);
+				
+				document.body.appendChild(form);
+				form.submit();
+			}
+			// 답글 삭제하기
+			function deleteAnswer() {
+				
+			}
 			//  =========================== 게시글 ===========================
 			function showModifyPage() {
 				const inquiryNo = "${ inquiry.inquiryNo }";

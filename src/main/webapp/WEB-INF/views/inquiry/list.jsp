@@ -29,15 +29,17 @@
 	                        <table>
 	                        	<colgroup>
 	                        		<col width="10%"></col>
+	                        		<col width="15%"></col>
 	                        		<col width="40%"></col>
-	                        		<col width="20%"></col>
 	                        		<col width="15%"></col>
-	                        		<col width="15%"></col>
+	                        		<col width="10%"></col>
+	                        		<col width="10%"></col>
 	                        	</colgroup>
 	                        	<thead>
 	                         		<tr>
 	                         			<!-- *************** 테이블 제목 *************** -->
 	                            		<th class="list-layer">번호</th>
+	                            		<th class="list-layer">아이디</th>
 	                         	    	<th class="list-layer">제목</th>
 	                          	     	<th class="list-layer">문의 날짜</th>
 	                         	    	<th class="list-layer">파일 여부</th>
@@ -53,6 +55,7 @@
 		                          		 	<c:url var="detailUrl" value="/inquiry/detail.do">
 		                          		 		<c:param name="inquiryNo" value="${ inquiry.inquiryNo }"></c:param>
 		                          		 	</c:url>
+		                          		 	<td><a href="${ detailUrl }">${ inquiry.inquiryWriter }</a></td>
 		                          		 	<td><a href="${ detailUrl }">${ inquiry.inquirySubject }</a></td>
 		                          		 	<td class="date">
 		                          		 		<fmt:formatDate pattern="YYYY-MM-dd" value="${ inquiry.iCreateDate }"/>
@@ -68,7 +71,7 @@
 	                        	<tfoot>
 	                        		<!-- *************** 테이블 네비게이션 *************** -->
 	                        		<tr align="center">
-	                        			<td colspan="5">
+	                        			<td colspan="6">
 											<c:if test="${ pInfo.startNavi != 1 }">
 												<c:url var="prevUrl" value="/inquiry/list.do">
 													<c:param name="page" value="${ pInfo.startNavi - 1 }"></c:param>
@@ -93,7 +96,7 @@
 	                        		</tr>
 	                        		<tr>
 	                        			<!-- *************** 테이블 검색 옵션 *************** -->
-	                        			<td colspan="5">
+	                        			<td colspan="6">
 	                        			<form action="/inquiry/search.do" method="get">
 	                        				<select name="searchCondition">
 	                        					<option value="all">전체</option>

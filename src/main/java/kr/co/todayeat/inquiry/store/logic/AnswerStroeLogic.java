@@ -23,4 +23,11 @@ public class AnswerStroeLogic implements AnswerStore{
 		return answer;
 	}
 
+	// 문의글 답변 수정
+	@Override
+	public int updateAnswer(SqlSession session, Answer answer) {
+		int result = session.update("AnswerMapper.updateAnswer", answer);
+		return result;
+	}
+
 }

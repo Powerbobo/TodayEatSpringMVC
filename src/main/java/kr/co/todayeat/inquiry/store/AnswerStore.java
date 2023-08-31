@@ -22,4 +22,12 @@ public interface AnswerStore {
 	 */
 	Answer selectAnswerByNo(SqlSession session, Integer inquiryNo);
 
+	/**
+	 * 문의글 답변 수정 Store
+	 * @param session
+	 * @param answer
+	 * @return int
+	 */
+	int updateAnswer(SqlSession session, Answer answer);
+
 }
